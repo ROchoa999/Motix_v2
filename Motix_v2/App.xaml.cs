@@ -10,6 +10,8 @@ using Motix_v2.Presentation.WinUI.Views;
 using System;
 using System.Runtime.InteropServices;
 using WinRT.Interop;
+using Motix_v2.Infraestructure.UnitOfWork;
+using Motix_v2.Presentation.WinUI.ViewModels;
 
 namespace Motix_v2
 {
@@ -43,6 +45,10 @@ namespace Motix_v2
                     services.AddScoped<IRepository<PaymentMethod>, PaymentMethodRepository>();
                     services.AddScoped<IRepository<Part>, PartRepository>();
                     services.AddScoped<IRepository<Document>, DocumentRepository>();
+
+                    services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+                    services.AddTransient<SalesViewModel>();
                 })
                 .Build();
 

@@ -6,13 +6,14 @@
     xmlns:local="using:Motix_v2.Presentation.WinUI.Views"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Motix">
 
-    <Grid>
+    <Grid x:Name="layoutRoot" Loaded="SalesWindow_Loaded">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Fila superior -->
@@ -69,8 +70,7 @@
         <!-- Área principal -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Contenido a la izquierda -->
@@ -128,35 +128,14 @@
                         <Border Grid.Row="1" Background="#E5E6FA" Padding="8">
                             <Grid ColumnSpacing="16">
                                 <Grid.ColumnDefinitions>
-                                    <!-- Izquierda: controles -->
-                                    <ColumnDefinition Width="3*"/>
                                     <!-- Derecha: placeholder verde -->
-                                    <ColumnDefinition Width="7*"/>
+                                    <ColumnDefinition Width="3*"/>
+                                    <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- IZQUIERDA: Crédito/Contado y Cargo/Abono, centrados -->
-                                <StackPanel
-                                  Grid.Column="0"
-                                  Orientation="Horizontal"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Spacing="32">
-
-                                    <!-- Grupo Crédito -->
-                                    <StackPanel Orientation="Vertical" Spacing="4" Style="{StaticResource StackPanelGroupButtons}">
-                                        <Button Content="CREDITO" Style="{StaticResource GroupButtonStyle}" />
-                                        <Button Content="CONTADO" Style="{StaticResource GroupButtonStyle}" />
-                                    </StackPanel>
-
-                                    <!-- Grupo Cargo -->
-                                    <StackPanel Orientation="Vertical" Spacing="4" Style="{StaticResource StackPanelGroupButtons}">
-                                        <Button Content="CARGO" Style="{StaticResource GroupButtonStyle}" />
-                                        <Button Content="ABONO" Style="{StaticResource GroupButtonStyle}" />
-                                    </StackPanel>
-                                </StackPanel>
 
                                 <Border
-                                Grid.Column="1"
+                                Grid.Column="0"
                                 Background="#B0C4DD"
                                 CornerRadius="4"
                                 Margin="4"
@@ -297,6 +276,15 @@
                                     </Grid>
                                 </Border>
 
+                                <Button
+                                    Grid.Column="1"
+                                    x:Name="ButtonSearch"
+                                    Content="Buscar"
+                                    Width="100"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Margin="4, 10, 4, 4"/>
+
                             </Grid>
                         </Border>
                     </Grid>
@@ -304,11 +292,14 @@
 
                 <Border Grid.Row="1" Background="Black"/>
                 <!-- Sección Intermedia -->
-                <Border
-                  Grid.Row="2"
-                  Grid.ColumnSpan="2"
-                  Background="Transparent"
-                  Padding="8">
+                <Border Grid.Row="2">
+                    <ct:DataGrid
+                        x:Name="DataGridResults"
+                        Grid.ColumnSpan="2"
+                        ItemsSource="{x:Bind ViewModel.Items}"
+                        AutoGenerateColumns="True"
+                        IsReadOnly="True"
+                        Margin="4"/>
 
                 </Border>
 
@@ -316,24 +307,6 @@
                 <Border Grid.Row="4" Background="Transparent">
                     <TextBlock Text="Sección Inferior" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
-            </Grid>
-
-            <!-- Columna vertical de 10 botones, con estilo "VerticalButtonsPanelStyle" -->
-            <Grid Grid.Column="1" Style="{StaticResource VerticalButtonsPanelStyle}" VerticalAlignment="Stretch">
-                <!-- StackPanel que centra verticalmente los botones -->
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <!-- Cada botón con estilo "VerticalButtonStyle" -->
-                    <Button Content="1" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="2" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="3" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="4" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="5" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="6" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="7" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="8" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="9" Style="{StaticResource VerticalButtonStyle}"/>
-                    <Button Content="10" Style="{StaticResource VerticalButtonStyle}"/>
-                </StackPanel>
             </Grid>
 
         </Grid>

@@ -40,7 +40,7 @@ namespace Motix_v2.Infraestructure.Data
                   .HasMaxLength(100);
 
                 e.Property(x => x.CifNif)
-                  .HasColumnName("CIF_NIF")
+                  .HasColumnName("cif_nif")
                   .HasMaxLength(20);
             });
 

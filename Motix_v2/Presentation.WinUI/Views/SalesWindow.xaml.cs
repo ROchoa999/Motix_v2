@@ -2,16 +2,21 @@ using Microsoft.UI.Xaml;
 using System;
 using System.Runtime.InteropServices;
 using WinRT.Interop;
+using Microsoft.Extensions.DependencyInjection;
+using Motix_v2.Presentation.WinUI.ViewModels;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
     public sealed partial class SalesWindow : Window
     {
-    [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        public SalesViewModel ViewModel { get; }
+
+        [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     private const int SW_MAXIMIZE = 3;
         public SalesWindow()
         {
             this.InitializeComponent();
+            ViewModel = App.Host.Services.GetRequiredService<SalesViewModel>();
 
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppTitleBar);
@@ -29,6 +34,12 @@ namespace Motix_v2.Presentation.WinUI.Views
         private void Documentos_Click(object sender, RoutedEventArgs e) => AbrirVentana(new DocumentWindow());
         private void Stock_Click(object sender, RoutedEventArgs e) => AbrirVentana(new StockWindow());
         private void Login_Click(object sender, RoutedEventArgs e) => AbrirVentana(new LoginWindow());
+
+        private async void SalesWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // aquí llamas a ViewModel para cargar clientes…
+            await ViewModel.LoadCustomersAsync();
+        }
 
     }
 }
