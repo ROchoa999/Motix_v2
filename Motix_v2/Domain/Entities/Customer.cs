@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Motix.Domain.Entities
+namespace Motix_v2.Domain.Entities
 {
     [Table("clientes")]
     public class Customer

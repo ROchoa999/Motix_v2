@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Motix.Domain.Entities;         // ← contendrá la clase Customer
+using Motix_v2.Domain.Entities;         // ← contendrá la clase Customer
 
-namespace Motix.Infraestructure.Data
+namespace Motix_v2.Infraestructure.Data
 {
     /// <summary>
     /// DbContext principal: gestiona la conexión a PostgreSQL (Aiven)

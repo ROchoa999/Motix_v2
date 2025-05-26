@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Motix.Infraestructure.Repositories
+namespace Motix_v2.Infraestructure.Repositories
 {
     /// <summary>
     /// Contrato genérico que deben implementar todos los repositorios.

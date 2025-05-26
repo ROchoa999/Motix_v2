@@ -1,31 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using System;
+using System.Runtime.InteropServices;
+using WinRT.Interop;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class SalesWindow : Window
     {
+    [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+    private const int SW_MAXIMIZE = 3;
         public SalesWindow()
         {
             this.InitializeComponent();
+
+            ExtendsContentIntoTitleBar = true;
+            SetTitleBar(AppTitleBar);
         }
+
+        private void AbrirVentana(Window w, bool cerrarActual = true)
+        {
+            IntPtr hWnd = WindowNative.GetWindowHandle(w);
+            ShowWindow(hWnd, SW_MAXIMIZE);
+            w.Activate();
+            //if (cerrarActual) this.Close();
+        }
+
+        private void Reparto_Click(object sender, RoutedEventArgs e) => AbrirVentana(new DeliveryWindow());
+        private void Documentos_Click(object sender, RoutedEventArgs e) => AbrirVentana(new DocumentWindow());
+        private void Stock_Click(object sender, RoutedEventArgs e) => AbrirVentana(new StockWindow());
+        private void Login_Click(object sender, RoutedEventArgs e) => AbrirVentana(new LoginWindow());
+
     }
 }

@@ -1,10 +1,10 @@
-﻿using Motix.Domain.Entities;
-using Motix.Infraestructure.Data;
-using Motix.Infraestructure.Repositories;
+﻿using Motix_v2.Domain.Entities;
+using Motix_v2.Infraestructure.Data;
+using Motix_v2.Infraestructure.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Motix.Infraestructure.UnitOfWork
+namespace Motix_v2.Infraestructure.UnitOfWork
 {
     public sealed class UnitOfWork : IUnitOfWork
     {

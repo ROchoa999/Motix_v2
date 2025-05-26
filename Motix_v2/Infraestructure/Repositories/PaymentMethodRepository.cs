@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Motix.Domain.Entities;
-using Motix.Infraestructure.Data;
+using Motix_v2.Domain.Entities;
+using Motix_v2.Infraestructure.Data;
 
-namespace Motix.Infraestructure.Repositories
+namespace Motix_v2.Infraestructure.Repositories
 {
     /// <summary>
     /// Repositorio para la entidad <see cref="PaymentMethod"/>.

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Motix.Infraestructure.Security
+namespace Motix_v2.Infraestructure.Security
 {
     class PasswordSecurity
     {

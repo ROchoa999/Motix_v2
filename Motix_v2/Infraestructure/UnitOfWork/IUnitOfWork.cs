@@ -1,10 +1,10 @@
-﻿using Motix.Domain.Entities;
-using Motix.Infraestructure.Repositories;
+﻿using Motix_v2.Domain.Entities;
+using Motix_v2.Infraestructure.Repositories;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Motix.Infraestructure.UnitOfWork
+namespace Motix_v2.Infraestructure.UnitOfWork
 {
     /// <summary>
     /// Orquesta los repositorios y concentra el guardado atómico de cambios.
