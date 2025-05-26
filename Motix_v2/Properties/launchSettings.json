@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Motix_v2 (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Motix_v2 (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
