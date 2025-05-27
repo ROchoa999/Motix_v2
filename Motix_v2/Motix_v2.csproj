@@ -20,6 +20,9 @@
     <Content Remove="Assets\BadgeLogo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\add.png" />
+    <None Remove="Assets\edit.png" />
+    <None Remove="Assets\substract.png" />
     <None Remove="Presentation.WinUI\Views\DeliveryWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\Dialogs\SearchResultsWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\DocumentWindow.xaml" />
@@ -63,7 +66,13 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Albaran.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Factura.png">
@@ -73,6 +82,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Presupuesto.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\substract.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

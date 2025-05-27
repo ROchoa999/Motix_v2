@@ -8,11 +8,15 @@
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
     PrimaryButtonText="Cerrar"
+    SecondaryButtonText="Seleccionar"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
     Title="Resultados de Búsqueda">
 
     <Grid Padding="8">
         <ct:DataGrid
             x:Name="DataGridResults"
+            SelectionMode="Single"
+            DoubleTapped="DataGridResults_DoubleTapped"
             AutoGenerateColumns="True"
             IsReadOnly="True"
             ColumnWidth="*"

@@ -27,9 +27,18 @@
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Margin" Value="2,0"/>
     </Style>
-    
+
+    <!-- Estilo para los botones de la franja horizontal -->
+    <Style x:Key="DataGridButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="2,0"/>
+        <Setter Property="CornerRadius" Value="10"/>
+    </Style>
+
     <!-- Estilo para las imagenes de los botones horizontales -->
-    <Style x:Key="HorizontalImageStyle" TargetType="Image">
+    <Style x:Key="ButtonImageStyle" TargetType="Image">
         <Setter Property="Width" Value="30"/>
         <Setter Property="Height" Value="30"/>
     </Style>

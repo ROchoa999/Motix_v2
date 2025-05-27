@@ -44,23 +44,25 @@
                 <!-- Cada botón con estilo "HorizontalButtonStyle" -->
                 <!-- 1. Albarán -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Albarán">
-                    <Image Source="ms-appx:///Assets/Albaran.png" Style="{StaticResource HorizontalImageStyle}" />
+                    x:Name="ButtonAlbaran"
+                    ToolTipService.ToolTip="Albarán"
+                    Click="ButtonAlbaran_Click">
+                    <Image Source="ms-appx:///Assets/Albaran.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <!-- 1. Factura -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
                     ToolTipService.ToolTip="Factura">
-                    <Image Source="ms-appx:///Assets/Factura.png" Style="{StaticResource HorizontalImageStyle}" />
+                    <Image Source="ms-appx:///Assets/Factura.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <!-- 1. Pedido -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
                     ToolTipService.ToolTip="Pedido">
-                    <Image Source="ms-appx:///Assets/Pedido.png" Style="{StaticResource HorizontalImageStyle}" />
+                    <Image Source="ms-appx:///Assets/Pedido.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <!-- 1. Presupuesto -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
                     ToolTipService.ToolTip="Presupuesto">
-                    <Image Source="ms-appx:///Assets/Presupuesto.png" Style="{StaticResource HorizontalImageStyle}" />
+                    <Image Source="ms-appx:///Assets/Presupuesto.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <Button Content="Nuevo" Style="{StaticResource HorizontalButtonStyle}"/>
                 <Button Content="Buscar Albaranes" Style="{StaticResource HorizontalButtonStyle}"/>
@@ -78,7 +80,6 @@
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="2"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="2"/>
                     <RowDefinition Height="*"/>
@@ -136,11 +137,11 @@
 
 
                                 <Border
-                                Grid.Column="0"
-                                Background="#B0C4DD"
-                                CornerRadius="4"
-                                Margin="4"
-                                Padding="8">
+                                    Grid.Column="0"
+                                    Background="#B0C4DD"
+                                    CornerRadius="4"
+                                    Margin="4"
+                                    Padding="8">
 
                                     <Grid RowSpacing="8" ColumnSpacing="16">
                                         <!-- Dos columnas iguales -->
@@ -214,7 +215,8 @@
                                                 Grid.Column="0"/>
                                             <TextBox
                                                 x:Name="TextBoxAddress"
-                                                IsEnabled="True"
+                                                IsReadOnly="True"
+                                                IsTabStop="False"
                                                 HorizontalAlignment="Stretch"
                                                 Grid.Column="1"/>
                                         </Grid>
@@ -297,23 +299,68 @@
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="1" Background="Black"/>
                 <!-- Sección Intermedia -->
-                <Border Grid.Row="2">
-                    <ct:DataGrid
-                        x:Name="DataGridResults"
-                        ColumnWidth="*"
-                        MinColumnWidth="100"
-                        Grid.ColumnSpan="2"
-                        ItemsSource="{x:Bind ViewModel.Items}"
-                        AutoGenerateColumns="True"
-                        IsReadOnly="True"
-                        Margin="4"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Row="0">
+                        <ct:DataGrid
+                            x:Name="DataGridResults"
+                            ColumnWidth="*"
+                            MinColumnWidth="100"
+                            Grid.ColumnSpan="2"
+                            ItemsSource="{x:Bind ViewModel.Items}"
+                            AutoGenerateColumns="True"
+                            IsReadOnly="True"
+                            Margin="4"/>
+                    </Border>
 
-                </Border>
+                    <StackPanel
+                        Grid.Column="1"
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="8"
+                        Padding="4">
 
-                <Border Grid.Row="3" Background="Black"/>
-                <Border Grid.Row="4" Background="Transparent">
+                        <Button
+                            x:Name="ButtonAddLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Añadir línea">
+                            <Image
+                                Source="ms-appx:///Assets/add.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
+
+                        <Button
+                            x:Name="ButtonEditLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Editar línea">
+                            <Image
+                                Source="ms-appx:///Assets/edit.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
+
+                        <Button
+                            x:Name="ButtonRemoveLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Eliminar línea">
+                            <Image
+                                Source="ms-appx:///Assets/substract.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
+
+                    </StackPanel>
+
+
+                </Grid>
+                
+
+                <Border Grid.Row="2" Background="Black"/>
+                <Border Grid.Row="3" Background="Transparent">
                     <TextBlock Text="Sección Inferior" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Border>
             </Grid>

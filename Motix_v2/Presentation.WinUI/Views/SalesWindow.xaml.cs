@@ -5,6 +5,7 @@ using WinRT.Interop;
 using Microsoft.Extensions.DependencyInjection;
 using Motix_v2.Presentation.WinUI.ViewModels;
 using Motix_v2.Presentation.WinUI.Views.Dialogs;
+using Motix_v2.Domain.Entities;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -13,6 +14,7 @@ namespace Motix_v2.Presentation.WinUI.Views
         public SalesViewModel ViewModel { get; }
 
         [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
     private const int SW_MAXIMIZE = 3;
         public SalesWindow()
         {
@@ -38,18 +40,52 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private async void SalesWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // aquí llamas a ViewModel para cargar clientes…
             await ViewModel.LoadCustomersAsync();
         }
 
         private async void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
-            // 1) Ejecutar la búsqueda en el ViewModel
+            // Ejecutar la búsqueda en el ViewModel
             var results = await ViewModel.SearchCustomersAsync();
             var dlg = new SearchResultsWindow(results);
 
             dlg.XamlRoot = layoutRoot.XamlRoot;
-            await dlg.ShowAsync();
+            var dialogResult = await dlg.ShowAsync();
+
+            // Si el usuario seleccionó un cliente, vuelca sus datos en los TextBoxes
+            if (dlg.SelectedCustomer is Customer c)
+            {
+                TextBoxClientId.Text = c.Id.ToString();
+                TextBoxName.Text = c.Nombre;
+                TextBoxCifNif.Text = c.CifNif ?? string.Empty;
+                TextBoxPhone.Text = c.Telefono ?? string.Empty;
+                TextBoxEmail.Text = c.Email ?? string.Empty;
+                TextBoxAddress.Text = c.Direccion ?? string.Empty;
+
+                // Sincronizar también el ViewModel
+                ViewModel.SearchClientId = c.Id.ToString();
+                ViewModel.SearchName = c.Nombre;
+                ViewModel.SearchCifNif = c.CifNif ?? string.Empty;
+                ViewModel.SearchPhone = c.Telefono ?? string.Empty;
+                ViewModel.SearchEmail = c.Email ?? string.Empty;
+            }
+        }
+
+        private void ButtonAlbaran_Click(object sender, RoutedEventArgs e)
+        {
+            TextBoxClientId.Text = string.Empty;
+            TextBoxName.Text = string.Empty;
+            TextBoxCifNif.Text = string.Empty;
+            TextBoxPhone.Text = string.Empty;
+            TextBoxEmail.Text = string.Empty;
+            TextBoxAddress.Text = string.Empty;
+
+            // Opcional: si usas bindings TwoWay, limpia también el ViewModel
+            ViewModel.SearchClientId = string.Empty;
+            ViewModel.SearchName = string.Empty;
+            ViewModel.SearchCifNif = string.Empty;
+            ViewModel.SearchPhone = string.Empty;
+            ViewModel.SearchEmail = string.Empty;
         }
 
     }
