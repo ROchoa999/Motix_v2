@@ -14,7 +14,7 @@
     mc:Ignorable="d"
     Title="Motix">
 
-    <Grid x:Name="layoutRoot" Loaded="SalesWindow_Loaded" DataContext="{x:Bind ViewModel, Mode=OneWay}">
+    <Grid x:Name="layoutRoot" DataContext="{x:Bind ViewModel, Mode=OneWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Fila superior -->
@@ -312,7 +312,7 @@
                             ColumnWidth="*"
                             MinColumnWidth="100"
                             Grid.ColumnSpan="2"
-                            ItemsSource="{x:Bind ViewModel.Items}"
+                            ItemsSource="{x:Bind ViewModel.Lines}"
                             AutoGenerateColumns="True"
                             IsReadOnly="True"
                             Margin="4"/>
@@ -329,7 +329,8 @@
                         <Button
                             x:Name="ButtonAddLine"
                             Style="{StaticResource DataGridButtonStyle}"
-                            ToolTipService.ToolTip="Añadir línea">
+                            ToolTipService.ToolTip="Añadir línea"
+                            Click="ButtonAddLine_Click">
                             <Image
                                 Source="ms-appx:///Assets/add.png"
                                 Style="{StaticResource ButtonImageStyle}" />
@@ -338,7 +339,8 @@
                         <Button
                             x:Name="ButtonEditLine"
                             Style="{StaticResource DataGridButtonStyle}"
-                            ToolTipService.ToolTip="Editar línea">
+                            ToolTipService.ToolTip="Editar línea"
+                            Click="ButtonEditLine_Click">
                             <Image
                                 Source="ms-appx:///Assets/edit.png"
                                 Style="{StaticResource ButtonImageStyle}" />
@@ -347,7 +349,8 @@
                         <Button
                             x:Name="ButtonRemoveLine"
                             Style="{StaticResource DataGridButtonStyle}"
-                            ToolTipService.ToolTip="Eliminar línea">
+                            ToolTipService.ToolTip="Eliminar línea"
+                            Click="ButtonRemoveLine_Click">
                             <Image
                                 Source="ms-appx:///Assets/substract.png"
                                 Style="{StaticResource ButtonImageStyle}" />

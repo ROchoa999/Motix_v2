@@ -28,5 +28,8 @@ namespace Motix_v2.Domain.Entities
         [Required]
         [Column("totallinea")]
         public decimal TotalLinea { get; set; }
+
+        [ForeignKey(nameof(DocumentoId))]
+        public Document Document { get; set; }
     }
 }

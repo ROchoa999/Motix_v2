@@ -19,6 +19,10 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         public string SearchPhone { get; set; } = string.Empty;
         public string SearchEmail { get; set; } = string.Empty;
 
+        // Colección de líneas de documento en memoria (sin persistir)
+        public ObservableCollection<DocumentLine> Lines { get; }
+            = new ObservableCollection<DocumentLine>();
+
         /// <summary>
         /// Colección enlazada al DataGrid en la vista.
         /// </summary>
@@ -28,16 +32,6 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         public SalesViewModel(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }
-
-        public async Task LoadCustomersAsync(CancellationToken ct = default)
-        {
-            var customers = await _unitOfWork.Customers.GetAllAsync(ct);
-            Items.Clear();
-            foreach (var customer in customers)
-            {
-                Items.Add(customer);
-            }
         }
 
         public async Task<List<Customer>> SearchCustomersAsync(CancellationToken ct = default)
@@ -61,5 +55,27 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
             return filtered;
         }
+
+        /// <summary>Añade una línea al albarán en curso.</summary>
+        public void AddLine(DocumentLine line)
+        {
+            Lines.Add(line);
+        }
+
+        /// <summary>Modifica una línea existente en el albarán en curso.</summary>
+        public void EditLine(DocumentLine line)
+        {
+            // Ejemplo simple: al editar, asume que la instancia ya está en Lines y Notifica cambios
+            var index = Lines.IndexOf(line);
+            if (index >= 0)
+                Lines[index] = line;
+        }
+
+        /// <summary>Elimina una línea del albarán en curso.</summary>
+        public void RemoveLine(DocumentLine line)
+        {
+            Lines.Remove(line);
+        }
+
     }
 }

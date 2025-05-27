@@ -1,0 +1,50 @@
+<ContentDialog
+    x:Class="Motix_v2.Presentation.WinUI.Views.Dialogs.PartDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    Title="Seleccionar Pieza"
+    PrimaryButtonText="Guardar"
+    SecondaryButtonText="Cancelar"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick">
+
+    <Grid Padding="16" RowSpacing="8" ColumnSpacing="8"
+        RowDefinitions="Auto,*,Auto"
+        ColumnDefinitions="Auto,*,Auto,Auto,Auto,Auto">
+
+        <!-- Fila 0: búsqueda -->
+        <TextBlock Text="Ref Interna:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="TextBoxSearchReferenciainterna" 
+             Grid.Row="0" Grid.Column="1" 
+             KeyDown="SearchPart_KeyDown"/>
+        <TextBlock Text="Nombre:" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"/>
+        <TextBox x:Name="TextBoxSearchName" 
+             Grid.Row="0" Grid.Column="3" 
+             KeyDown="SearchPart_KeyDown"/>
+        <Button x:Name="ButtonSearchPart" 
+            Grid.Row="0" Grid.Column="4" 
+            Content="Buscar" 
+            Click="ButtonSearchPart_Click"/>
+
+        <!-- Fila 1: resultados -->
+        <ct:DataGrid x:Name="DataGridParts"
+            Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
+            AutoGenerateColumns="True"
+            IsReadOnly="True"
+            SelectionMode="Single"
+            ColumnWidth="*"
+            SelectionChanged="DataGridParts_SelectionChanged"/>
+
+        <!-- Fila 2: cantidad y precios -->
+        <TextBlock Text="Cantidad:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox 
+            x:Name="TextBoxQuantity" 
+            Grid.Row="2" Grid.Column="1"
+            TextChanged="TextBoxQuantity_TextChanged"/>
+        <TextBlock Text="Precio U.:" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"/>
+        <TextBlock x:Name="TextBlockUnitPrice" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center"/>
+        <TextBlock Text="Total:" Grid.Row="2" Grid.Column="4" VerticalAlignment="Center"/>
+        <TextBlock x:Name="TextBlockTotalPrice" Grid.Row="2" Grid.Column="5" VerticalAlignment="Center"/>
+
+    </Grid>
+</ContentDialog>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -38,5 +39,7 @@ namespace Motix_v2.Domain.Entities
         [Required]
         [Column("estadoreparto")]
         public string EstadoReparto { get; set; } = null!;
+
+        public ICollection<DocumentLine> Lines { get; set; } = new List<DocumentLine>();
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Motix_v2.Presentation.WinUI.ViewModels;
 using Motix_v2.Presentation.WinUI.Views.Dialogs;
 using Motix_v2.Domain.Entities;
+using Microsoft.UI.Xaml.Controls;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -37,11 +38,6 @@ namespace Motix_v2.Presentation.WinUI.Views
         private void Documentos_Click(object sender, RoutedEventArgs e) => AbrirVentana(new DocumentWindow());
         private void Stock_Click(object sender, RoutedEventArgs e) => AbrirVentana(new StockWindow());
         private void Login_Click(object sender, RoutedEventArgs e) => AbrirVentana(new LoginWindow());
-
-        private async void SalesWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.LoadCustomersAsync();
-        }
 
         private async void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -86,6 +82,44 @@ namespace Motix_v2.Presentation.WinUI.Views
             ViewModel.SearchCifNif = string.Empty;
             ViewModel.SearchPhone = string.Empty;
             ViewModel.SearchEmail = string.Empty;
+        }
+
+        private async void ButtonAddLine_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Abrir diálogo modal para seleccionar pieza y cantidad
+            var dlg = new PartDialog();
+            dlg.XamlRoot = layoutRoot.XamlRoot;
+            var result = await dlg.ShowAsync();
+
+            // 2) Si pulsa "Guardar" y el diálogo devolvió línea, añadirla al ViewModel
+            if (result == ContentDialogResult.Primary && dlg.ResultLine is DocumentLine line)
+            {
+                ViewModel.AddLine(line);
+            }
+        }
+
+        private async void ButtonEditLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGridResults.SelectedItem is DocumentLine original)
+            {
+                // Abrir el PartDialog inicializado con la línea existente
+                var dlg = new PartDialog(original);
+                dlg.XamlRoot = layoutRoot.XamlRoot;
+                var result = await dlg.ShowAsync();
+
+                if (result == ContentDialogResult.Primary && dlg.ResultLine is DocumentLine updated)
+                {
+                    ViewModel.EditLine(updated);
+                }
+            }
+        }
+
+        private void ButtonRemoveLine_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGridResults.SelectedItem is DocumentLine toRemove)
+            {
+                ViewModel.RemoveLine(toRemove);
+            }
         }
 
     }
