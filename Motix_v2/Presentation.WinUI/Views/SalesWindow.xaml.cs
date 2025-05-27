@@ -46,13 +46,10 @@ namespace Motix_v2.Presentation.WinUI.Views
         {
             // 1) Ejecutar la búsqueda en el ViewModel
             var results = await ViewModel.SearchCustomersAsync();
-
-            // 2) Crear y mostrar la ventana modal de resultados
             var dlg = new SearchResultsWindow(results);
-            dlg.Activate();
 
-            // (Opcional: maximizar)
-            IntPtr hWnd = WindowNative.GetWindowHandle(dlg);
+            dlg.XamlRoot = layoutRoot.XamlRoot;
+            await dlg.ShowAsync();
         }
 
     }
