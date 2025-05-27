@@ -73,8 +73,20 @@ namespace Motix_v2.Infraestructure.Repositories
         public void UpdateLine(DocumentLine line) =>
             _linesSet.Update(line);
 
-        public void RemoveLine(DocumentLine line) =>
-            _linesSet.Remove(line);
+        public void RemoveLine(DocumentLine line)
+        {
+            // Si la línea aún no se guardó (ID temporal), simplemente la desenganchamos
+            var entry = _context.Entry(line);
+            if (entry.State == EntityState.Added || line.Id == default(int))
+            {
+                entry.State = EntityState.Detached;
+            }
+            else
+            {
+                // Si ya existía en BD, la marcamos para eliminación
+                _linesSet.Remove(line);
+            }
+        }
 
         public void RemoveLinesByDocumentId(string documentId) =>
             _linesSet.RemoveRange(

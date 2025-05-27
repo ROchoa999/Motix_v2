@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using Motix_v2.Domain.Entities;
 using Motix_v2.Infraestructure.UnitOfWork;
 using System.Linq;
+using System;
+using Motix_v2.Infraestructure.Repositories;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
     public class SalesViewModel
     {
         private readonly IUnitOfWork _unitOfWork;
+        public string DocumentId { get; } = Guid.NewGuid().ToString();
 
         // --- criterios de búsqueda ---
         public string SearchClientId { get; set; } = string.Empty;
@@ -28,6 +31,8 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         /// </summary>
         public ObservableCollection<Customer> Items { get; }
             = new ObservableCollection<Customer>();
+
+        public Task SaveAsync(CancellationToken ct = default) => _unitOfWork.SaveChangesAsync(ct);
 
         public SalesViewModel(IUnitOfWork unitOfWork)
         {
@@ -57,23 +62,31 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         }
 
         /// <summary>Añade una línea al albarán en curso.</summary>
-        public void AddLine(DocumentLine line)
+        public async Task AddLineAsync(DocumentLine line, CancellationToken ct = default)
         {
+            line.DocumentoId = DocumentId;
+            // accede al repositorio concreto para líneas
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+            await docRepo.AddLineAsync(line, ct);
             Lines.Add(line);
         }
 
+
         /// <summary>Modifica una línea existente en el albarán en curso.</summary>
-        public void EditLine(DocumentLine line)
+        public void EditLine(DocumentLine original, DocumentLine updated)
         {
-            // Ejemplo simple: al editar, asume que la instancia ya está en Lines y Notifica cambios
-            var index = Lines.IndexOf(line);
-            if (index >= 0)
-                Lines[index] = line;
+            var index = Lines.IndexOf(original);
+            if (index < 0) return;
+
+            Lines.RemoveAt(index);
+            Lines.Insert(index, updated);
         }
 
         /// <summary>Elimina una línea del albarán en curso.</summary>
         public void RemoveLine(DocumentLine line)
         {
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+            docRepo.RemoveLine(line);
             Lines.Remove(line);
         }
 

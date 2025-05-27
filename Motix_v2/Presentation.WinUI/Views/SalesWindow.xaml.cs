@@ -94,7 +94,7 @@ namespace Motix_v2.Presentation.WinUI.Views
             // 2) Si pulsa "Guardar" y el diálogo devolvió línea, añadirla al ViewModel
             if (result == ContentDialogResult.Primary && dlg.ResultLine is DocumentLine line)
             {
-                ViewModel.AddLine(line);
+                await ViewModel.AddLineAsync(line);
             }
         }
 
@@ -102,14 +102,14 @@ namespace Motix_v2.Presentation.WinUI.Views
         {
             if (DataGridResults.SelectedItem is DocumentLine original)
             {
-                // Abrir el PartDialog inicializado con la línea existente
                 var dlg = new PartDialog(original);
                 dlg.XamlRoot = layoutRoot.XamlRoot;
                 var result = await dlg.ShowAsync();
 
-                if (result == ContentDialogResult.Primary && dlg.ResultLine is DocumentLine updated)
+                if (result == ContentDialogResult.Primary
+                    && dlg.ResultLine is DocumentLine updated)
                 {
-                    ViewModel.EditLine(updated);
+                    ViewModel.EditLine(original, updated);
                 }
             }
         }
