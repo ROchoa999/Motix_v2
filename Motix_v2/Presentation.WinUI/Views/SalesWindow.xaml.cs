@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using WinRT.Interop;
 using Microsoft.Extensions.DependencyInjection;
 using Motix_v2.Presentation.WinUI.ViewModels;
+using Motix_v2.Presentation.WinUI.Views.Dialogs;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -39,6 +40,19 @@ namespace Motix_v2.Presentation.WinUI.Views
         {
             // aquí llamas a ViewModel para cargar clientes…
             await ViewModel.LoadCustomersAsync();
+        }
+
+        private async void ButtonSearch_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Ejecutar la búsqueda en el ViewModel
+            var results = await ViewModel.SearchCustomersAsync();
+
+            // 2) Crear y mostrar la ventana modal de resultados
+            var dlg = new SearchResultsWindow(results);
+            dlg.Activate();
+
+            // (Opcional: maximizar)
+            IntPtr hWnd = WindowNative.GetWindowHandle(dlg);
         }
 
     }

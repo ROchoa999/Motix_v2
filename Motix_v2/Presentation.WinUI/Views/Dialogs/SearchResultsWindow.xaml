@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Motix_v2.Presentation.WinUI.Views.Dialogs.SearchResultsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    mc:Ignorable="d"
+    Title="SearchResultsWindow">
+
+    <Grid Padding="8">
+        <ct:DataGrid
+            x:Name="DataGridResults"
+            AutoGenerateColumns="True"
+            IsReadOnly="True"
+            ColumnWidth="*"
+            Margin="0,0,0,40"/>
+        <Button
+            x:Name="closeButton"
+            Content="Cerrar"
+            Width="80"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="CloseButton_Click"/>
+    </Grid>
+</Window>

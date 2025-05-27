@@ -21,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Presentation.WinUI\Views\DeliveryWindow.xaml" />
+    <None Remove="Presentation.WinUI\Views\Dialogs\SearchResultsWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\DocumentWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\LoginWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\SalesWindow.xaml" />
@@ -121,5 +122,10 @@
 	    <None Include="appsettings.local.json">
 		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    </None>
+    </ItemGroup>
+    <ItemGroup>
+      <Page Update="Presentation.WinUI\Views\Dialogs\SearchResultsWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </Page>
     </ItemGroup>
 </Project>

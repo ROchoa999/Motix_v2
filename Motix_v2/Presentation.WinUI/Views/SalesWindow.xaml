@@ -8,12 +8,13 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:toolkit="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:data="using:Motix_v2.Presentation.WinUI.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="Motix">
 
-    <Grid x:Name="layoutRoot" Loaded="SalesWindow_Loaded">
+    <Grid x:Name="layoutRoot" Loaded="SalesWindow_Loaded" DataContext="{x:Bind ViewModel, Mode=OneWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Fila superior -->
@@ -166,16 +167,17 @@
                                                 <ColumnDefinition Width="5*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockClientId"
-                                            Text="Client ID:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockClientId"
+                                                Text="Id Cliente:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxClientId"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxClientId"
+                                                Text="{x:Bind ViewModel.SearchClientId, Mode=TwoWay}"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                         <!-- Fila 0: Name -->
@@ -185,16 +187,17 @@
                                                 <ColumnDefinition Width="5*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockName"
-                                            Text="Name:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockName"
+                                                Text="Nombre:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxName"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxName"
+                                                Text="{x:Bind ViewModel.SearchName, Mode=TwoWay}"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                         <!-- Fila 1: Address (span 2 cols) -->
@@ -204,16 +207,16 @@
                                                 <ColumnDefinition Width="11*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockAddress"
-                                            Text="Address:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockAddress"
+                                                Text="Dirección:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxAddress"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxAddress"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                         <!-- Fila 2: Phone -->
@@ -223,16 +226,17 @@
                                                 <ColumnDefinition Width="5*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockPhone"
-                                            Text="Phone:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockPhone"
+                                                Text="Teléfono:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxPhone"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxPhone"
+                                                Text="{x:Bind ViewModel.SearchPhone, Mode=TwoWay}"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                         <!-- Fila 2: CIF/NIF -->
@@ -242,16 +246,17 @@
                                                 <ColumnDefinition Width="5*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockCifNif"
-                                            Text="CIF/NIF:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockCifNif"
+                                                Text="CIF/NIF:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxCifNif"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxCifNif"
+                                                Text="{x:Bind ViewModel.SearchCifNif, Mode=TwoWay}"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                         <!-- Fila 3: Email (span 2 cols) -->
@@ -261,16 +266,17 @@
                                                 <ColumnDefinition Width="11*"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock
-                                            x:Name="TextBlockEmail"
-                                            Text="Email:"
-                                            FontWeight="Bold"
-                                            VerticalAlignment="Center"
-                                            Grid.Column="0"/>
+                                                x:Name="TextBlockEmail"
+                                                Text="Email:"
+                                                FontWeight="Bold"
+                                                VerticalAlignment="Center"
+                                                Grid.Column="0"/>
                                             <TextBox
-                                            x:Name="TextBoxEmail"
-                                            IsEnabled="True"
-                                            HorizontalAlignment="Stretch"
-                                            Grid.Column="1"/>
+                                                x:Name="TextBoxEmail"
+                                                Text="{x:Bind ViewModel.SearchEmail, Mode=TwoWay}"
+                                                IsEnabled="True"
+                                                HorizontalAlignment="Stretch"
+                                                Grid.Column="1"/>
                                         </Grid>
 
                                     </Grid>
@@ -279,6 +285,7 @@
                                 <Button
                                     Grid.Column="1"
                                     x:Name="ButtonSearch"
+                                    Click="ButtonSearch_Click"
                                     Content="Buscar"
                                     Width="100"
                                     HorizontalAlignment="Left"
@@ -295,6 +302,8 @@
                 <Border Grid.Row="2">
                     <ct:DataGrid
                         x:Name="DataGridResults"
+                        ColumnWidth="*"
+                        MinColumnWidth="100"
                         Grid.ColumnSpan="2"
                         ItemsSource="{x:Bind ViewModel.Items}"
                         AutoGenerateColumns="True"
