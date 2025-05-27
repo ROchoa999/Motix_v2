@@ -84,42 +84,22 @@ namespace Motix_v2.Presentation.WinUI.Views
             ViewModel.SearchEmail = string.Empty;
         }
 
-        private async void ButtonAddLine_Click(object sender, RoutedEventArgs e)
+        private void ButtonAddLine_Click(object sender, RoutedEventArgs e)
         {
-            // 1) Abrir diálogo modal para seleccionar pieza y cantidad
-            var dlg = new PartDialog();
-            dlg.XamlRoot = layoutRoot.XamlRoot;
-            var result = await dlg.ShowAsync();
-
-            // 2) Si pulsa "Guardar" y el diálogo devolvió línea, añadirla al ViewModel
-            if (result == ContentDialogResult.Primary && dlg.ResultLine is DocumentLine line)
-            {
-                await ViewModel.AddLineAsync(line);
-            }
+            var window = new PartWindow();
+            window.Activate();
         }
 
-        private async void ButtonEditLine_Click(object sender, RoutedEventArgs e)
+        private void ButtonEditLine_Click(object sender, RoutedEventArgs e)
         {
-            if (DataGridResults.SelectedItem is DocumentLine original)
-            {
-                var dlg = new PartDialog(original);
-                dlg.XamlRoot = layoutRoot.XamlRoot;
-                var result = await dlg.ShowAsync();
-
-                if (result == ContentDialogResult.Primary
-                    && dlg.ResultLine is DocumentLine updated)
-                {
-                    ViewModel.EditLine(original, updated);
-                }
-            }
+            var window = new PartWindow();
+            window.Activate();
         }
 
         private void ButtonRemoveLine_Click(object sender, RoutedEventArgs e)
         {
-            if (DataGridResults.SelectedItem is DocumentLine toRemove)
-            {
-                ViewModel.RemoveLine(toRemove);
-            }
+            var window = new PartWindow();
+            window.Activate();
         }
 
     }

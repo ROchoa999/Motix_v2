@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml;
 using System.Globalization;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace Motix_v2.Presentation.WinUI.Views.Dialogs
 {
@@ -20,6 +21,7 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
             this.InitializeComponent();
             _unitOfWork = App.Host.Services.GetRequiredService<IUnitOfWork>();
             DataGridParts.ItemsSource = new List<Part>();
+            DataGridParts.Visibility = Visibility.Collapsed;
         }
 
         public PartDialog(DocumentLine existing) : this()
@@ -68,6 +70,7 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
             );
 
             DataGridParts.ItemsSource = parts;
+            DataGridParts.Visibility = Visibility.Visible;
         }
 
         private async void ButtonSearchPart_Click(object sender, RoutedEventArgs e)
@@ -132,6 +135,20 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
                 args.Cancel = true;
             }
         }
+
+        private void DataGridParts_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            // Cancelar Id, PrecioVenta y UnidadMedida
+            if (e.PropertyName == nameof(Part.Id)
+             || e.PropertyName == nameof(Part.PrecioVenta)
+             || e.PropertyName == nameof(Part.UnidadMedida))
+            {
+                e.Cancel = true;
+            }
+            
+            e.Column.Width = new DataGridLength(1, DataGridLengthUnitType.Auto);
+        }
+
 
     }
 }
