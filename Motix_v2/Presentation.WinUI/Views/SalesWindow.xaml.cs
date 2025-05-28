@@ -16,6 +16,9 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+        [DllImport("user32.dll")] private static extern bool EnableWindow(IntPtr hWnd, bool bEnable);
+
+
         private const int SW_MAXIMIZE = 3;
         public SalesWindow()
         {
@@ -86,20 +89,40 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private void ButtonAddLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PartWindow();
-            window.Activate();
+            var window = new AddLineWindow();
+            ShowModal(window);
         }
 
         private void ButtonEditLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PartWindow();
-            window.Activate();
+            var window = new AddLineWindow();
+            ShowModal(window);
         }
 
         private void ButtonRemoveLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new PartWindow();
-            window.Activate();
+            var window = new AddLineWindow();
+            ShowModal(window);
+        }
+
+        private void ShowModal(Window child)
+        {
+            var parentHwnd = WindowNative.GetWindowHandle(this);
+            EnableWindow(parentHwnd, false);
+
+            // — bajar opacidad al 50%
+            if (this.Content is FrameworkElement root)
+                root.Opacity = 0.5;
+
+            child.Closed += (s, e) =>
+            {
+                EnableWindow(parentHwnd, true);
+                // — restaurar opacidad
+                if (this.Content is FrameworkElement r)
+                    r.Opacity = 1.0;
+            };
+
+            child.Activate();
         }
 
     }

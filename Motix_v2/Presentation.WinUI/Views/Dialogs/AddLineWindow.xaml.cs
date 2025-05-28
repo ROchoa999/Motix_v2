@@ -14,15 +14,15 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class PartWindow : Window
+    public sealed partial class AddLineWindow : Window
     {
-        public PartWindowViewModel ViewModel { get; }
+        public AddLineWindowViewModel ViewModel { get; }
 
-        public PartWindow()
+        public AddLineWindow()
         {
             this.InitializeComponent();
 
-            ViewModel = App.Host.Services.GetRequiredService<PartWindowViewModel>();
+            ViewModel = App.Host.Services.GetRequiredService<AddLineWindowViewModel>();
 
             var hwnd = WindowNative.GetWindowHandle(this);
             var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);

@@ -49,7 +49,7 @@ namespace Motix_v2
                     services.AddScoped<IUnitOfWork, UnitOfWork>();
 
                     services.AddTransient<SalesViewModel>();
-                    services.AddTransient<PartWindowViewModel>();
+                    services.AddTransient<AddLineWindowViewModel>();
                 })
                 .Build();
 
