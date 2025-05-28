@@ -46,6 +46,19 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            await PerformLoginAsync();
+        }
+
+        private async void PasswordBox_EnterInvoked(
+            KeyboardAccelerator sender,
+            KeyboardAcceleratorInvokedEventArgs args)
+        {
+            await PerformLoginAsync();
+            args.Handled = true;
+        }
+
+        private async Task PerformLoginAsync()
+        {
             string usuario = UsernameTextBox.Text.Trim();
             string contraseña = PasswordBox.Password;
 
@@ -80,7 +93,6 @@ namespace Motix_v2.Presentation.WinUI.Views
                 await MostrarErrorAsync($"Error al iniciar sesión: {ex.Message}");
             }
         }
-
 
         private async Task MostrarErrorAsync(string mensaje)
         {

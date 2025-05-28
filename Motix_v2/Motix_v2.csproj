@@ -22,6 +22,8 @@
   <ItemGroup>
     <None Remove="Assets\add.png" />
     <None Remove="Assets\edit.png" />
+    <None Remove="Assets\Motix.png" />
+    <None Remove="Assets\Motix16x9.png" />
     <None Remove="Assets\substract.png" />
     <None Remove="Presentation.WinUI\Views\DeliveryWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\Dialogs\PartDialog.xaml" />
@@ -81,6 +83,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\IconoV1.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Motix.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Motix16x9.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Pedido.png">

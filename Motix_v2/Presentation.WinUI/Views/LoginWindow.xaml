@@ -8,28 +8,39 @@
     mc:Ignorable="d"
     Title="Motix (Inicio de sesión)">
 
-    <Grid>
-        <!-- 1. Tres filas: menú, imagen, contenido -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid x:Name="layoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
 
-        <!-- Formulario de login centrado -->
         <Border
-        x:Name="LoginFormBorder"
-        Grid.Row="0"
-        Style="{StaticResource LoginFormBorderStyle}"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center">
-            <StackPanel Width="300" Spacing="12">
-                <TextBlock Text="Usuario" FontSize="14" />
+            x:Name="LoginFormBorder"
+            Grid.Column="1"
+            Style="{StaticResource LoginFormBorderStyle}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel Width="auto" Spacing="8">
+                <Image
+                    x:Name="LogoImage"
+                    Source="ms-appx:///Assets/Motix16x9.png"
+                    Stretch="Uniform"
+                    HorizontalAlignment="Center" />
+                <TextBlock Text="Usuario" Style="{StaticResource LoginLabelsStyle}"/>
                 <TextBox
                     x:Name="UsernameTextBox"
                     PlaceholderText="Introduce tu usuario" />
-                <TextBlock Text="Contraseña" FontSize="14" />
+                <TextBlock Text="Contraseña" Style="{StaticResource LoginLabelsStyle}" Margin="0, 20, 0, 0"/>
                 <PasswordBox
                     x:Name="PasswordBox"
-                    PlaceholderText="Introduce tu contraseña" />
+                    PlaceholderText="Introduce tu contraseña" >
+                    <PasswordBox.KeyboardAccelerators>
+                        <KeyboardAccelerator
+                            Key="Enter"
+                            Invoked="PasswordBox_EnterInvoked"/>
+                    </PasswordBox.KeyboardAccelerators>
+                </PasswordBox>
                 <Button
                     x:Name="LoginButton"
                     Content="Iniciar sesión"
