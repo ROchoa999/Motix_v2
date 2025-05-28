@@ -117,7 +117,8 @@
                 Grid.Column="1" 
                 Width="80" 
                 Margin="8,0"
-                Text="{x:Bind ViewModel.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{x:Bind ViewModel.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                InputScope="Number"/>
 
             <TextBlock Text="Precio U.:" Grid.Column="2" VerticalAlignment="Center" Margin="16,0"/>
             <TextBlock x:Name="TextBlockUnitPrice" 
@@ -143,8 +144,8 @@
             HorizontalAlignment="Right"
             Padding="16"
             Spacing="8">
-            <Button x:Name="ButtonCancel" Content="Cancelar" Width="100"/>
-            <Button x:Name="ButtonConfirm" Content="Confirmar" Width="100"/>
+            <Button x:Name="ButtonCancel" Content="Cancelar" Width="100" Click="OnCancelClicked"/>
+            <Button x:Name="ButtonConfirm" Content="Confirmar" Width="100" Click="OnConfirmClicked"/>
         </StackPanel>
     </Grid>
 </Window>

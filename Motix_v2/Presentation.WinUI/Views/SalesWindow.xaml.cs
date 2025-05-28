@@ -13,6 +13,7 @@ namespace Motix_v2.Presentation.WinUI.Views
     public sealed partial class SalesWindow : Window
     {
         public SalesViewModel ViewModel { get; }
+        private Document _currentDocument;
 
         [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
@@ -27,6 +28,8 @@ namespace Motix_v2.Presentation.WinUI.Views
 
             ExtendsContentIntoTitleBar = true;
             SetTitleBar(AppTitleBar);
+
+            ClearAlbaranForm();
         }
 
         private void AbrirVentana(Window w, bool cerrarActual = true)
@@ -72,37 +75,32 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private void ButtonAlbaran_Click(object sender, RoutedEventArgs e)
         {
-            TextBoxClientId.Text = string.Empty;
-            TextBoxName.Text = string.Empty;
-            TextBoxCifNif.Text = string.Empty;
-            TextBoxPhone.Text = string.Empty;
-            TextBoxEmail.Text = string.Empty;
-            TextBoxAddress.Text = string.Empty;
-
-            // Opcional: si usas bindings TwoWay, limpia también el ViewModel
-            ViewModel.SearchClientId = string.Empty;
-            ViewModel.SearchName = string.Empty;
-            ViewModel.SearchCifNif = string.Empty;
-            ViewModel.SearchPhone = string.Empty;
-            ViewModel.SearchEmail = string.Empty;
+            ClearAlbaranForm();
         }
 
         private void ButtonAddLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddLineWindow();
+            var window = new AddLineWindow(ViewModel.DocumentId, _currentDocument);
+            window.LineCreated += linea => ViewModel.Lines.Add(linea);
             ShowModal(window);
         }
 
         private void ButtonEditLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddLineWindow();
-            ShowModal(window);
+            if (DataGridResults.SelectedItem is DocumentLine original)
+            {
+                var window = new AddLineWindow(ViewModel.DocumentId, _currentDocument, original);
+                window.LineCreated += updated => ViewModel.EditLine(original, updated);
+                ShowModal(window);
+            }
         }
 
         private void ButtonRemoveLine_Click(object sender, RoutedEventArgs e)
         {
-            var window = new AddLineWindow();
-            ShowModal(window);
+            if (DataGridResults.SelectedItem is DocumentLine linea)
+            {
+                ViewModel.RemoveLine(linea);
+            }
         }
 
         private void ShowModal(Window child)
@@ -123,6 +121,31 @@ namespace Motix_v2.Presentation.WinUI.Views
             };
 
             child.Activate();
+        }
+
+        private void ClearAlbaranForm()
+        {
+            // 1) Limpiar UI
+            TextBoxClientId.Text = string.Empty;
+            TextBoxName.Text = string.Empty;
+            TextBoxCifNif.Text = string.Empty;
+            TextBoxPhone.Text = string.Empty;
+            TextBoxEmail.Text = string.Empty;
+            TextBoxAddress.Text = string.Empty;
+
+            // 2) Limpiar filtros en el VM (si usas TwoWay)
+            ViewModel.SearchClientId = string.Empty;
+            ViewModel.SearchName = string.Empty;
+            ViewModel.SearchCifNif = string.Empty;
+            ViewModel.SearchPhone = string.Empty;
+            ViewModel.SearchEmail = string.Empty;
+
+            // 3) Limpiar líneas de documento añadidas
+            ViewModel.Lines.Clear();
+            _currentDocument = new Document
+            {
+                Id = ViewModel.DocumentId
+            };
         }
 
     }
