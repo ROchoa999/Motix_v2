@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls">
+
+    <!-- ##########  COLORES POR DEFECTO  ########## -->
+    <Style TargetType="Border">
+        <Setter Property="Background" Value="#E5E6FA"/>
+    </Style>
+
+    <Style TargetType="Panel">
+        <Setter Property="Background" Value="#E5E6FA"/>
+    </Style>
+
+    <Style TargetType="ct:DataGrid">
+        <Setter Property="Background" Value="#E5E6FA"/>
+    </Style>
+
+    <!-- ##########  FORMATO PARA TABLAS  ########## -->
+    <SolidColorBrush x:Key="RowBackgroundBrush" Color="#CCD1F5" />
+    <SolidColorBrush x:Key="AlternatingRowBackgroundBrush" Color="#E5E6FA" />
 
     <!-- ##########  SALES WINDOW  ########## -->
 

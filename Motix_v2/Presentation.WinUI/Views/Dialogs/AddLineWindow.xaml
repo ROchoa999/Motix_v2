@@ -79,7 +79,9 @@
             ColumnWidth="*"
             IsReadOnly="True"
             SelectionMode="Single"
-            Margin="16,0">
+            Margin="16,0"
+            RowBackground="{StaticResource RowBackgroundBrush}"
+            AlternatingRowBackground="{StaticResource AlternatingRowBackgroundBrush}">
 
             <ct:DataGrid.Columns>
                 <ct:DataGridTextColumn

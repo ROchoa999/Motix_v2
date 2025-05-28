@@ -17,6 +17,9 @@ namespace Motix_v2.Domain.Entities
         [Column("piezaid")]
         public int? PiezaId { get; set; }
 
+        [ForeignKey(nameof(PiezaId))]
+        public Part Pieza { get; set; } = null!;
+
         [Required]
         [Column("cantidad")]
         public int Cantidad { get; set; }

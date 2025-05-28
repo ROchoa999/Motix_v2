@@ -118,6 +118,7 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
                 DocumentoId = _documentoId,
                 Document = _parentDocument,
                 PiezaId = ViewModel.SelectedPart!.Id,
+                Pieza = ViewModel.SelectedPart!,
                 Cantidad = ViewModel.Quantity,
                 PrecioUnitario = ViewModel.UnitPrice,
                 TotalLinea = ViewModel.TotalPrice
