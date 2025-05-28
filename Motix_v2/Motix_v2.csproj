@@ -80,6 +80,9 @@
     <Content Update="Assets\Factura.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\IconoV1.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Pedido.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
