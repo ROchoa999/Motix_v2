@@ -6,7 +6,7 @@
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     Title="Seleccionar Pieza">
 
-    <Grid>
+    <Grid DataContext="{Binding ViewModel, ElementName=This}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Búsqueda -->
@@ -18,31 +18,92 @@
             <!-- Botones -->
         </Grid.RowDefinitions>
 
-        <!-- Fila 0: Búsqueda -->
-        <StackPanel
-            Grid.Row="0"
-            Orientation="Horizontal"
-            Padding="16"
-            Spacing="8">
-            <TextBlock Text="Ref Interna:" VerticalAlignment="Center"/>
-            <TextBox x:Name="TextBoxSearchReferenciainterna" Width="150"/>
-            <TextBlock Text="Nombre:" VerticalAlignment="Center" Margin="16,0,0,0"/>
-            <TextBox x:Name="TextBoxSearchName" Width="150"/>
+        <!-- Fila 0: Búsqueda con Grid de 3 columnas iguales y contenido centrado -->
+        <Grid Grid.Row="0" Padding="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Columna 0: Ref Interna -->
+            <StackPanel
+                Grid.Column="0"
+                Orientation="Horizontal"
+                Spacing="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Text="Ref Interna:"
+                    VerticalAlignment="Center"/>
+                <TextBox
+                    x:Name="TextBoxSearchReferenciainterna"
+                    Width="150"
+                    Text="{x:Bind ViewModel.SearchInternalReference, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!-- Columna 1: Nombre -->
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal"
+                Spacing="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Text="Nombre:"
+                    VerticalAlignment="Center"/>
+                <TextBox
+                    x:Name="TextBoxSearchName"
+                    Width="150"
+                    Text="{x:Bind ViewModel.SearchName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <!-- Columna 2: Botón Buscar -->
             <Button
+                Grid.Column="2"
                 x:Name="ButtonSearchPart"
                 Content="Buscar"
-                Margin="16,0,0,0"/>
-        </StackPanel>
+                Command="{x:Bind ViewModel.SearchCommand}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center" />
+        </Grid>
+
 
         <!-- Fila 1: Tabla de piezas -->
         <ct:DataGrid
             x:Name="DataGridParts"
             Grid.Row="1"
-            AutoGenerateColumns="True"
-            ColumnWidth="Auto"
+            ItemsSource="{x:Bind ViewModel.Parts}"
+            AutoGenerateColumns="False"
+            ColumnWidth="*"
             IsReadOnly="True"
             SelectionMode="Single"
-            Margin="16,0"/>
+            Margin="16,0">
+
+            <ct:DataGrid.Columns>
+                <ct:DataGridTextColumn
+                    Header="Referencia Interna"
+                    Binding="{Binding ReferenciaInterna}" />
+
+                <ct:DataGridTextColumn
+                    Header="Nombre"
+                    Binding="{Binding Nombre}" />
+
+                <ct:DataGridTextColumn
+                    Header="Descripción"
+                    Binding="{Binding Descripcion}" />
+
+                <ct:DataGridTextColumn
+                    Header="Precio de Venta"
+                    Binding="{Binding PrecioVenta}"
+                    ElementStyle="{StaticResource RightAlignedCell}"/>
+
+                <ct:DataGridTextColumn
+                    Header="Stock"
+                    Binding="{Binding Stock}"
+                    ElementStyle="{StaticResource RightAlignedCell}"/>
+            </ct:DataGrid.Columns>
+        </ct:DataGrid>
 
         <!-- Fila 2: Cantidad y precios -->
         <Grid

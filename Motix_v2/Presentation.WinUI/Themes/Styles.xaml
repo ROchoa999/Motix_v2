@@ -122,4 +122,9 @@
         
     </Style>
 
+    <!-- ##########  PART WINDOW  ########## -->
+    <Style x:Key="RightAlignedCell" TargetType="TextBlock">
+        <Setter Property="TextAlignment" Value="Right"/>
+    </Style>
+
 </ResourceDictionary>

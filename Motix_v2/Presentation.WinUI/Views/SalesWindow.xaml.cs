@@ -16,7 +16,7 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-    private const int SW_MAXIMIZE = 3;
+        private const int SW_MAXIMIZE = 3;
         public SalesWindow()
         {
             this.InitializeComponent();
