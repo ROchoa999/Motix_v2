@@ -27,8 +27,9 @@
                 <controls:MenuBarItem Title="Archivo" Foreground="White">
                     <controls:MenuFlyoutItem Text="Reparto"   Click="Reparto_Click"/>
                 </controls:MenuBarItem>
-                <controls:MenuBarItem Title="Editar"  Foreground="White"/>
-                <controls:MenuBarItem Title="Salir"  Foreground="White"/>
+                <controls:MenuBarItem Title="Salir"  Foreground="White">
+                    <controls:MenuFlyoutItem Text="Cerrar sesión" Click="Salir_Click"/>
+                </controls:MenuBarItem>
             </controls:MenuBar>
         </Border>
 

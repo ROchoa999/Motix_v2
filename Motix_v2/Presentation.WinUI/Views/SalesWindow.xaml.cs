@@ -7,6 +7,7 @@ using Motix_v2.Presentation.WinUI.ViewModels;
 using Motix_v2.Presentation.WinUI.Views.Dialogs;
 using Motix_v2.Domain.Entities;
 using Microsoft.UI.Xaml.Controls;
+using Motix_v2.Infraestructure.Services;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -147,6 +148,20 @@ namespace Motix_v2.Presentation.WinUI.Views
                 Id = ViewModel.DocumentId
             };
         }
+
+        private void Salir_Click(object sender, RoutedEventArgs e)
+        {
+            var auth = App.Host.Services.GetRequiredService<AuthenticationService>();
+            auth.CurrentUserName = string.Empty;
+
+            var login = new LoginWindow();
+            IntPtr hWndLogin = WindowNative.GetWindowHandle(login);
+            ShowWindow(hWndLogin, SW_MAXIMIZE);
+            login.Activate();
+
+            this.Close();
+        }
+
 
     }
 }
