@@ -1,45 +1,61 @@
-using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Input;
-using Motix_v2.Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
+using Motix_v2.Presentation.WinUI.ViewModels;
+using WinRT.Interop;
+using Microsoft.UI.Windowing;
+using Windows.Graphics;
+using Microsoft.UI;
 using System.Collections.Generic;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Motix_v2.Domain.Entities;
 
 namespace Motix_v2.Presentation.WinUI.Views.Dialogs
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class SearchResultsWindow : ContentDialog
+    public sealed partial class SearchResultsWindow : Window
     {
-        public Customer? SelectedCustomer { get; private set; }
-
-        public SearchResultsWindow(IEnumerable<Customer> customers)
+        public SearchResultsWindow(IEnumerable<Customer> results)
         {
-            this.InitializeComponent();
-            DataGridResults.ItemsSource = customers;
+            InitializeComponent();
+
+            ViewModel = new SearchResultsViewModel(results);
+
+            ViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(ViewModel.SelectedItem))
+                    ButtonSeleccionar.IsEnabled = ViewModel.SelectedItem != null;
+            };
+
+            // Opcional: fijar tamaño y deshabilitar máximizar/minimizar
+            var hwnd = WindowNative.GetWindowHandle(this);
+            var windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
+            appWindow.Resize(new SizeInt32(1000, 700));
+            if (appWindow.Presenter is OverlappedPresenter p)
+            {
+                p.IsResizable = false;
+                p.IsMaximizable = false;
+                p.IsMinimizable = false;
+            }
         }
 
-        // 1) Doble clic sobre una fila
+        public SearchResultsViewModel ViewModel { get; }
+
+        private void OnCerrarClicked(object sender, RoutedEventArgs e)
+            => this.Close();
+
+        private void OnSeleccionarClicked(object sender, RoutedEventArgs e)
+        {
+            // Notificar al llamador y cerrar
+            ViewModel.ConfirmSelection();
+            this.Close();
+        }
+
         private void DataGridResults_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
-            ConfirmSelection();
-        }
-
-        // 2) Click en el botón “Seleccionar” (SecondaryButton)
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            ConfirmSelection();
-        }
-
-        // Lógica común que cierra el diálogo dejando la selección
-        private void ConfirmSelection()
-        {
-            if (DataGridResults.SelectedItem is Customer c)
+            if (ViewModel.SelectedItem != null)
             {
-                SelectedCustomer = c;
-                Hide(); // cierra el ContentDialog
+                ViewModel.ConfirmSelection();
+                this.Close();
             }
         }
     }

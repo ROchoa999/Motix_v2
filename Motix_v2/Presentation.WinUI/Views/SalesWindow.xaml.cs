@@ -43,26 +43,27 @@ namespace Motix_v2.Presentation.WinUI.Views
             var results = await ViewModel.SearchCustomersAsync();
             var dlg = new SearchResultsWindow(results);
 
-            dlg.XamlRoot = layoutRoot.XamlRoot;
-            var dialogResult = await dlg.ShowAsync();
-
-            // Si el usuario seleccionó un cliente, vuelca sus datos en los TextBoxes
-            if (dlg.SelectedCustomer is Customer c)
+            dlg.ViewModel.SelectionConfirmed += c =>
             {
-                TextBoxClientId.Text = c.Id.ToString();
-                TextBoxName.Text = c.Nombre;
-                TextBoxCifNif.Text = c.CifNif ?? string.Empty;
-                TextBoxPhone.Text = c.Telefono ?? string.Empty;
-                TextBoxEmail.Text = c.Email ?? string.Empty;
-                TextBoxAddress.Text = c.Direccion ?? string.Empty;
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    TextBoxClientId.Text = c.Id.ToString();
+                    TextBoxName.Text = c.Nombre;
+                    TextBoxCifNif.Text = c.CifNif ?? string.Empty;
+                    TextBoxPhone.Text = c.Telefono ?? string.Empty;
+                    TextBoxEmail.Text = c.Email ?? string.Empty;
+                    TextBoxAddress.Text = c.Direccion ?? string.Empty;
 
-                // Sincronizar también el ViewModel
-                ViewModel.SearchClientId = c.Id.ToString();
-                ViewModel.SearchName = c.Nombre;
-                ViewModel.SearchCifNif = c.CifNif ?? string.Empty;
-                ViewModel.SearchPhone = c.Telefono ?? string.Empty;
-                ViewModel.SearchEmail = c.Email ?? string.Empty;
-            }
+                    // Sincronizar también el ViewModel
+                    ViewModel.SearchClientId = c.Id.ToString();
+                    ViewModel.SearchName = c.Nombre;
+                    ViewModel.SearchCifNif = c.CifNif ?? string.Empty;
+                    ViewModel.SearchPhone = c.Telefono ?? string.Empty;
+                    ViewModel.SearchEmail = c.Email ?? string.Empty;
+                });
+            };
+
+            ShowModal(dlg);
         }
 
         private void ButtonAlbaran_Click(object sender, RoutedEventArgs e)
@@ -133,6 +134,7 @@ namespace Motix_v2.Presentation.WinUI.Views
 
             // 3) Limpiar líneas de documento añadidas
             ViewModel.Lines.Clear();
+
             _currentDocument = new Document
             {
                 Id = ViewModel.DocumentId

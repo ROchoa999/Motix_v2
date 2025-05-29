@@ -22,7 +22,7 @@ namespace Motix_v2.Presentation.WinUI.Views
         {
             this.InitializeComponent();
             ViewModel = App.Host.Services
-                .GetRequiredService<StockWindowViewModel>();
+                .GetRequiredService<StockViewModel>();
 
             // Opcional: dispara la carga al abrir
             ViewModel.LoadCommand.Execute(null);
@@ -43,7 +43,7 @@ namespace Motix_v2.Presentation.WinUI.Views
             }
         }
 
-        public StockWindowViewModel ViewModel { get; }
+        public StockViewModel ViewModel { get; }
 
         private void OnVolverClicked(object sender, RoutedEventArgs e)
         {

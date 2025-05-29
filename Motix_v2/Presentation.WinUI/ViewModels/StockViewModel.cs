@@ -6,11 +6,11 @@ using Microsoft.UI.Xaml.Input;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
-    public class StockWindowViewModel
+    public class StockViewModel
     {
         private readonly IUnitOfWork _uow;
 
-        public StockWindowViewModel(IUnitOfWork uow)
+        public StockViewModel(IUnitOfWork uow)
         {
             _uow = uow;
             StockItems = new ObservableCollection<Part>();

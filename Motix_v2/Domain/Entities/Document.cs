@@ -15,6 +15,9 @@ namespace Motix_v2.Domain.Entities
         [Column("clienteid")]
         public int ClienteId { get; set; }
 
+        [ForeignKey(nameof(ClienteId))]
+        public Customer Cliente { get; set; } = null!;
+
         [Column("usuarioid")]
         public int UsuarioId { get; set; }
 
