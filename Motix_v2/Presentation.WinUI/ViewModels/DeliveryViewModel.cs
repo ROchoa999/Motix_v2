@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Input;
 using Motix_v2.Domain.Entities;
 using Motix_v2.Infraestructure.UnitOfWork;
+using System.Collections.Generic;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
@@ -24,18 +24,16 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             FinishDeliveryCommand = new XamlUICommand();
 
             LoadCommand.ExecuteRequested += async (s, e) => await LoadAsync();
-            // Por ahora los demás comandos no hacen nada
+            StartDeliveryCommand.ExecuteRequested += async (s, e) => await StartDeliveryAsync();
+            FinishDeliveryCommand.ExecuteRequested += async (s, e) => await FinishDeliveryAsync();
         }
 
-        // Colección ligada al DataGrid
         public ObservableCollection<Document> DeliveryDocuments { get; }
 
-        // Comandos
         public XamlUICommand LoadCommand { get; }
         public XamlUICommand StartDeliveryCommand { get; }
         public XamlUICommand FinishDeliveryCommand { get; }
 
-        // Nombre del repartidor filtrado por RolId = 2
         private string _deliveryUserName = string.Empty;
         public string DeliveryUserName
         {
@@ -43,7 +41,6 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             private set { _deliveryUserName = value; OnPropertyChanged(); }
         }
 
-        // Control de visibilidad de botones
         private bool _showStart;
         public bool ShowStartDeliveryButton
         {
@@ -58,7 +55,6 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             private set { _showFinish = value; OnPropertyChanged(); }
         }
 
-        // Lógica de carga y filtrado
         public async Task LoadAsync()
         {
             // 1) Obtener repartidor (rolid = 2)
@@ -66,7 +62,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             var rep = reps.FirstOrDefault();
             DeliveryUserName = rep?.Nombre ?? string.Empty;
 
-            // 2) Si hay documentos en EnReparto, muéstralos; si no, muestra Pendiente
+            // 2) Mostrar primero EnReparto o, si no hay, Pendiente
             var enReparto = await _uow.Documents.FindAsync(d =>
                 d.EstadoReparto == EstadoReparto.EnReparto.ToString());
             if (enReparto.Any())
@@ -85,11 +81,35 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             }
         }
 
-        private void Populate(System.Collections.Generic.IEnumerable<Document> docs)
+        private void Populate(IEnumerable<Document> docs)
         {
             DeliveryDocuments.Clear();
             foreach (var d in docs)
                 DeliveryDocuments.Add(d);
+        }
+
+        private async Task StartDeliveryAsync()
+        {
+            foreach (var doc in DeliveryDocuments)
+            {
+                doc.EstadoReparto = EstadoReparto.EnReparto.ToString();
+                _uow.Documents.Update(doc);
+            }
+
+            await _uow.SaveChangesAsync();
+
+            await LoadAsync();
+        }
+
+        private async Task FinishDeliveryAsync()
+        {
+            foreach (var doc in DeliveryDocuments)
+            {
+                doc.EstadoReparto = EstadoReparto.Entregado.ToString();
+                _uow.Documents.Update(doc);
+            }
+            await _uow.SaveChangesAsync();
+            await LoadAsync();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

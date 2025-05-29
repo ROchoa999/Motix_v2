@@ -45,12 +45,12 @@
 
         <!-- DataGrid de albaranes -->
         <ctl:DataGrid Grid.Row="1"
-                      ItemsSource="{x:Bind ViewModel.DeliveryDocuments}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      CanUserSortColumns="True"
-                      ColumnWidth="*"
-                      Margin="16">
+            ItemsSource="{x:Bind ViewModel.DeliveryDocuments}"
+            AutoGenerateColumns="False"
+            IsReadOnly="True"
+            CanUserSortColumns="True"
+            ColumnWidth="*"
+            Margin="16">
             <!-- columnas... -->
         </ctl:DataGrid>
 
