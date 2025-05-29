@@ -33,9 +33,9 @@ namespace Motix_v2.Presentation.WinUI.Views
             ClearAlbaranForm();
         }
 
-        private void Reparto_Click(object sender, RoutedEventArgs e) => new DeliveryWindow().Activate();
-        private void Documentos_Click(object sender, RoutedEventArgs e) => new DocumentWindow().Activate();
-        private void Stock_Click(object sender, RoutedEventArgs e) =>  new StockWindow().Activate();
+        private void Reparto_Click(object sender, RoutedEventArgs e) => ShowModal(new DeliveryWindow());
+        private void Documentos_Click(object sender, RoutedEventArgs e) => ShowModal(new DocumentWindow());
+        private void Stock_Click(object sender, RoutedEventArgs e) => ShowModal(new StockWindow());
 
         private async void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {

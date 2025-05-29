@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Presentation.WinUI\Themes\Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <conv:BooleanToVisibilityConverter x:Key="BoolToVis" xmlns:conv="using:Motix_v2.Presentation.WinUI.Converters"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

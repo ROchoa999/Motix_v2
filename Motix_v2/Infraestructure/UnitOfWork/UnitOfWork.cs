@@ -30,8 +30,12 @@ namespace Motix_v2.Infraestructure.UnitOfWork
         public IRepository<Document> Documents { get; }
 
         /* Persistencia de cambios */
-        public Task<int> SaveChangesAsync(CancellationToken ct = default) =>
-            _context.SaveChangesAsync(ct);
+        public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+        {
+            var result = await _context.SaveChangesAsync(ct);
+            _context.ChangeTracker.Clear();
+            return result;
+        }
 
         /* Liberación de recursos */
         public ValueTask DisposeAsync() => _context.DisposeAsync();

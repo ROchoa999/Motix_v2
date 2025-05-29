@@ -20,6 +20,7 @@
             Grid.Row="0"
             ItemsSource="{x:Bind ViewModel.StockItems}"
             AutoGenerateColumns="False"
+            CanUserSortColumns="True"
             IsReadOnly="False"
             ColumnWidth="*" 
             Margin="16"
@@ -89,23 +90,24 @@
 
         <!-- Fila 1: Botones -->
         <StackPanel
-        Grid.Row="1"
-        Orientation="Horizontal"
-        HorizontalAlignment="Right"
-        Padding="16"
-        Spacing="8">
-            <Button
-          x:Name="ButtonVolver"
-          Content="Volver"
-          Width="100"
-          Click="OnVolverClicked" />
+            Grid.Row="1"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Padding="16"
+            Spacing="8">
 
             <Button
-          x:Name="ButtonGuardar"
-          Content="Guardar"
-          Width="100"
-          Visibility="Collapsed"
-          Click="OnGuardarClicked" />
+                x:Name="ButtonVolver"
+                Content="Volver"
+                Width="100"
+                Click="OnVolverClicked" />
+
+            <Button
+                x:Name="ButtonGuardar"
+                Content="Guardar"
+                Width="100"
+                Command="{x:Bind ViewModel.SaveCommand}"
+                Visibility="{Binding HasModifications, Mode=OneWay, Converter={StaticResource BoolToVis}}"/>
         </StackPanel>
     </Grid>
 </Window>

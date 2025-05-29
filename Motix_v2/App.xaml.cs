@@ -56,6 +56,7 @@ namespace Motix_v2
                     services.AddTransient<DocumentViewModel>();
                     services.AddTransient<SearchResultsViewModel>();
                     services.AddTransient<DeliveryViewModel>();
+                    services.AddTransient<StockItemViewModel>();
                 })
                 .Build();
 
