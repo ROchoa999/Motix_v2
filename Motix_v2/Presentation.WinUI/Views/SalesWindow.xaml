@@ -26,9 +26,6 @@
             <controls:MenuBar HorizontalAlignment="Stretch" VerticalAlignment="Top">
                 <controls:MenuBarItem Title="Archivo" Foreground="White">
                     <controls:MenuFlyoutItem Text="Reparto"   Click="Reparto_Click"/>
-                    <controls:MenuFlyoutItem Text="Documentos" Click="Documentos_Click"/>
-                    <controls:MenuFlyoutItem Text="Stock"     Click="Stock_Click"/>
-                    <controls:MenuFlyoutItem Text="Login"     Click="Login_Click"/>
                 </controls:MenuBarItem>
                 <controls:MenuBarItem Title="Editar"  Foreground="White"/>
                 <controls:MenuBarItem Title="Salir"  Foreground="White"/>
@@ -39,7 +36,7 @@
         <Grid Grid.Row="1" Style="{StaticResource HorizontalButtonsPanelStyle}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="0">
                 <!-- Cada botón con estilo "HorizontalButtonStyle" -->
-                <!-- 1. Albarán -->
+                <!-- Nuevo Albarán -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
                     x:Name="ButtonAlbaran"
                     Margin="10,0,0,0"
@@ -48,14 +45,16 @@
                     Click="ButtonAlbaran_Click">
                     <Image Source="ms-appx:///Assets/NuevoAlbaran.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
-                <!-- 1. Factura -->
+                <!-- Listado de albaranes -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Buscar albaranes">
+                    ToolTipService.ToolTip="Buscar albaranes"
+                    Click="Documentos_Click">
                     <Image Source="ms-appx:///Assets/BuscarAlbaran.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
-                <!-- 1. Pedido -->
+                <!-- Listado de stock -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Buscar piezas">
+                    ToolTipService.ToolTip="Buscar piezas"
+                    Click="Stock_Click">
                     <Image Source="ms-appx:///Assets/BuscarPiezas.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
             </StackPanel>
@@ -424,6 +423,7 @@
                     Width="400"
                     Height="36"
                     IsReadOnly="True"
+                    Text="{x:Bind ViewModel.Vendedor, Mode=OneWay}"
                     RelativePanel.RightOf="TextBlockVendedor"
                     RelativePanel.AlignVerticalCenterWith="TextBlockVendedor"
                     Margin="8,0,0,0"/>
@@ -484,6 +484,7 @@
                     IsReadOnly="True"
                     Width="150"
                     Height="36"
+                    Text="{x:Bind ViewModel.TotalFactura, Mode=OneWay}"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignVerticalCenterWith="ComboBoxFormaPago"
                     Margin="0,0,25,0"/>
@@ -503,6 +504,7 @@
                     IsReadOnly="True"
                     Width="150"
                     Height="36"
+                    Text="{x:Bind ViewModel.Iva21, Mode=OneWay}"
                     RelativePanel.LeftOf="TextBoxTotal"
                     RelativePanel.AlignVerticalCenterWith="TextBoxTotal"
                     Margin="0,0,18,0"/>
@@ -522,6 +524,7 @@
                     IsReadOnly="True"
                     Width="150"
                     Height="36"
+                    Text="{x:Bind ViewModel.BaseImponible, Mode=OneWay}"
                     RelativePanel.LeftOf="TextBoxIva"
                     RelativePanel.AlignVerticalCenterWith="TextBoxIva"
                     Margin="0,0,18,0"/>

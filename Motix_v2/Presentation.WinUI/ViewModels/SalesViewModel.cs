@@ -9,12 +9,15 @@ using System;
 using Motix_v2.Infraestructure.Repositories;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Motix_v2.Infraestructure.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
     public class SalesViewModel : INotifyPropertyChanged
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly AuthenticationService _authService;
         public string DocumentId { get; } = Guid.NewGuid().ToString();
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -32,6 +35,27 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         public ObservableCollection<DocumentLine> Lines { get; }
             = new ObservableCollection<DocumentLine>();
 
+        // Variables para almacenar los totales del albaran
+        public decimal BaseImponible { get; private set; }
+        public decimal Iva21 { get; private set; }
+        public decimal TotalFactura { get; private set; }
+
+        // Rellenar el nombre del vendedor con el usuario actual
+        private string _vendedor = string.Empty;
+        public string Vendedor
+        {
+            get => _vendedor;
+            set
+            {
+                if (_vendedor != value)
+                {
+                    _vendedor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         /// <summary>
         /// Colección enlazada al DataGrid en la vista.
         /// </summary>
@@ -40,9 +64,13 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         public Task SaveAsync(CancellationToken ct = default) => _unitOfWork.SaveChangesAsync(ct);
 
-        public SalesViewModel(IUnitOfWork unitOfWork)
+        public SalesViewModel(IUnitOfWork unitOfWork, AuthenticationService authService)
         {
             _unitOfWork = unitOfWork;
+            _authService = App.Host.Services.GetRequiredService<AuthenticationService>();
+            Vendedor = _authService.CurrentUserName;
+            Lines.CollectionChanged += (s, e) => RecalculateTotals();
+            RecalculateTotals();
         }
 
         public async Task<List<Customer>> SearchCustomersAsync(CancellationToken ct = default)
@@ -108,6 +136,19 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                     OnPropertyChanged();
                 }
             }
+        }
+
+        private void RecalculateTotals()
+        {
+            BaseImponible = Lines.Sum(l => l.TotalLinea);
+
+            Iva21 = Math.Round(BaseImponible * 0.21m, 2);
+
+            TotalFactura = BaseImponible + Iva21;
+
+            OnPropertyChanged(nameof(BaseImponible));
+            OnPropertyChanged(nameof(Iva21));
+            OnPropertyChanged(nameof(TotalFactura));
         }
 
     }

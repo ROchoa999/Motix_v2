@@ -64,14 +64,17 @@ namespace Motix_v2.Presentation.WinUI.Views
 
             try
             {
-                // 1) Buscar en la BD al usuario por nombre de usuario
+                // Buscar en la BD al usuario por nombre de usuario
                 var usuarios = await _userRepo.FindAsync(u => u.Usuario == usuario);
                 var usuarioEnt = usuarios.SingleOrDefault();
 
-                // 2) Verificar el hash de la contraseña
+                // Verificar el hash de la contraseña
                 if (usuarioEnt != null
                     && PasswordSecurity.VerifyPassword(contraseña, usuarioEnt.ContrasenaHash))
                 {
+                    // Guardar el usuario logueado en el servicio de sesión
+                    var auth = _services.GetRequiredService<Infraestructure.Services.AuthenticationService>();
+                    auth.CurrentUserName = usuario;
                     // Login correcto: abrir ventana principal
                     var main = new SalesWindow();
                     main.Activate();

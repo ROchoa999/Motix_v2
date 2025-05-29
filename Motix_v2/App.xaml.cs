@@ -36,6 +36,8 @@ namespace Motix_v2
                 })
                 .ConfigureServices((ctx, services) =>
                 {
+                    services.AddSingleton<Infraestructure.Services.AuthenticationService>();
+
                     services.AddDbContext<AppDbContext>(opt =>
                         opt.UseNpgsql(ctx.Configuration.GetConnectionString("MotixDb")));
 
