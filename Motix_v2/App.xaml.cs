@@ -52,6 +52,7 @@ namespace Motix_v2
 
                     services.AddTransient<SalesViewModel>();
                     services.AddTransient<AddLineWindowViewModel>();
+                    services.AddTransient<StockWindowViewModel>();
                 })
                 .Build();
 

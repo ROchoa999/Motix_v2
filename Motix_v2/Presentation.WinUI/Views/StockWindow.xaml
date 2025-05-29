@@ -1,15 +1,111 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="Motix_v2.Presentation.WinUI.Views.StockWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Motix_v2.Presentation.WinUI.Views"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="StockWindow">
+    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    x:Name="This"
+    Title="Buscar Stock">
 
-    <Grid>
+    <Grid DataContext="{Binding ViewModel, ElementName=This}" Background="{StaticResource BackgroundColor}">
+        <!-- 2 filas: DataGrid y botones -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
+        <!-- Fila 0: DataGrid de stock -->
+        <ct:DataGrid
+            x:Name="DataGridStock"
+            Grid.Row="0"
+            ItemsSource="{x:Bind ViewModel.StockItems}"
+            AutoGenerateColumns="False"
+            IsReadOnly="False"
+            ColumnWidth="*" 
+            Margin="16"
+            RowBackground="{StaticResource RowBackgroundBrush}"
+            AlternatingRowBackground="{StaticResource AlternatingRowBackgroundBrush}"
+            BorderBrush="Black" BorderThickness="1.5">
+
+            <ct:DataGrid.Resources>
+                <Color x:Key="BackgroundColor">#E9ECEF</Color>
+                <Color x:Key="HoveredBackgroundColor">#E9ECEF</Color>
+                <Color x:Key="PressedBackgroundColor">#A5D8FF</Color>
+                <StaticResource x:Key="DataGridColumnHeaderBackgroundColor" ResourceKey="BackgroundColor"/>
+                <StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundColor" ResourceKey="HoveredBackgroundColor"/>
+                <StaticResource x:Key="DataGridColumnHeaderPressedBackgroundColor" ResourceKey="PressedBackgroundColor"/>
+            </ct:DataGrid.Resources>
+
+            <ct:DataGrid.ColumnHeaderStyle>
+                <Style TargetType="ctp:DataGridColumnHeader">
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style>
+            </ct:DataGrid.ColumnHeaderStyle>
+
+            <ct:DataGrid.Columns>
+                <!-- Columnas de ejemplo -->
+                <ct:DataGridTextColumn
+                    Header="Referencia Interna"
+                    Binding="{Binding ReferenciaInterna}"
+                    IsReadOnly="True" />
+
+                <ct:DataGridTextColumn
+                    Header="Nombre"
+                    Binding="{Binding Nombre}"
+                    IsReadOnly="True" />
+
+                <ct:DataGridTextColumn
+                    Header="Descripción"
+                    Binding="{Binding Descripcion}"
+                    IsReadOnly="True" />
+
+                <!-- Stock editable -->
+                <ct:DataGridTextColumn
+                    Header="Stock"
+                    Binding="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ct:DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
+                    </ct:DataGridTextColumn.ElementStyle>
+                </ct:DataGridTextColumn>
+
+                <ct:DataGridTextColumn
+                    Header="Precio"
+                    Binding="{Binding PrecioVenta}"
+                    IsReadOnly="True" >
+                    <ct:DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right"/>
+                        </Style>
+                    </ct:DataGridTextColumn.ElementStyle>
+                </ct:DataGridTextColumn>
+
+            </ct:DataGrid.Columns>
+        </ct:DataGrid>
+
+        <!-- Fila 1: Botones -->
+        <StackPanel
+        Grid.Row="1"
+        Orientation="Horizontal"
+        HorizontalAlignment="Right"
+        Padding="16"
+        Spacing="8">
+            <Button
+          x:Name="ButtonVolver"
+          Content="Volver"
+          Width="100"
+          Click="OnVolverClicked" />
+
+            <Button
+          x:Name="ButtonGuardar"
+          Content="Guardar"
+          Width="100"
+          Visibility="Collapsed"
+          Click="OnGuardarClicked" />
+        </StackPanel>
     </Grid>
 </Window>
