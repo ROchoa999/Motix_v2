@@ -7,13 +7,19 @@ using Motix_v2.Infraestructure.UnitOfWork;
 using System.Linq;
 using System;
 using Motix_v2.Infraestructure.Repositories;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
-    public class SalesViewModel
+    public class SalesViewModel : INotifyPropertyChanged
     {
         private readonly IUnitOfWork _unitOfWork;
         public string DocumentId { get; } = Guid.NewGuid().ToString();
+        public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         // --- criterios de búsqueda ---
         public string SearchClientId { get; set; } = string.Empty;
@@ -88,6 +94,20 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             var docRepo = (DocumentRepository)_unitOfWork.Documents;
             docRepo.RemoveLine(line);
             Lines.Remove(line);
+        }
+
+        private string _selectedPaymentMethod = "Tarjeta";
+        public string SelectedPaymentMethod
+        {
+            get => _selectedPaymentMethod;
+            set
+            {
+                if (_selectedPaymentMethod != value)
+                {
+                    _selectedPaymentMethod = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
     }

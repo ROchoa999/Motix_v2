@@ -21,9 +21,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\add.png" />
+    <None Remove="Assets\BuscarAlbaran.png" />
+    <None Remove="Assets\BuscarPiezas.png" />
     <None Remove="Assets\edit.png" />
     <None Remove="Assets\Motix.png" />
     <None Remove="Assets\Motix16x9.png" />
+    <None Remove="Assets\NuevoAlbaran.png" />
     <None Remove="Assets\substract.png" />
     <None Remove="Presentation.WinUI\Views\DeliveryWindow.xaml" />
     <None Remove="Presentation.WinUI\Views\Dialogs\SearchResultsWindow.xaml" />
@@ -74,6 +77,12 @@
     <Content Update="Assets\Albaran.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\BuscarAlbaran.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\BuscarPiezas.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\edit.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -87,6 +96,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Motix16x9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\NuevoAlbaran.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Pedido.png">

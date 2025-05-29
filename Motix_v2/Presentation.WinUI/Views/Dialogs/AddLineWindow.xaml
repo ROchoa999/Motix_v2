@@ -6,7 +6,7 @@
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     Title="Seleccionar Pieza">
 
-    <Grid DataContext="{Binding ViewModel, ElementName=This}">
+    <Grid DataContext="{Binding ViewModel, ElementName=This}" Style="{StaticResource ParentStyle}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Búsqueda -->

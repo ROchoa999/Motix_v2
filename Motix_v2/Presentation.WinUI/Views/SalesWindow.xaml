@@ -21,410 +21,520 @@
             <!-- Contenido principal -->
         </Grid.RowDefinitions>
 
-        <!-- Fila superior: un Grid con estilo "TopRowGridStyle" -->
+        <!-- Botones en el Frame -->
         <Border x:Name="AppTitleBar" Grid.Row="0" Style="{StaticResource TopRowGridStyle}">
             <controls:MenuBar HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <controls:MenuBarItem Title="Archivo">
+                <controls:MenuBarItem Title="Archivo" Foreground="White">
                     <controls:MenuFlyoutItem Text="Reparto"   Click="Reparto_Click"/>
                     <controls:MenuFlyoutItem Text="Documentos" Click="Documentos_Click"/>
                     <controls:MenuFlyoutItem Text="Stock"     Click="Stock_Click"/>
                     <controls:MenuFlyoutItem Text="Login"     Click="Login_Click"/>
                 </controls:MenuBarItem>
-                <controls:MenuBarItem Title="Editar" />
-                <controls:MenuBarItem Title="Salir" />
+                <controls:MenuBarItem Title="Editar"  Foreground="White"/>
+                <controls:MenuBarItem Title="Salir"  Foreground="White"/>
             </controls:MenuBar>
         </Border>
 
-        <!-- Fila horizontal de 10 botones: un StackPanel con estilo "HorizontalButtonsPanelStyle" -->
+        <!-- NavBar -->
         <Grid Grid.Row="1" Style="{StaticResource HorizontalButtonsPanelStyle}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="0">
                 <!-- Cada botón con estilo "HorizontalButtonStyle" -->
                 <!-- 1. Albarán -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
                     x:Name="ButtonAlbaran"
-                    ToolTipService.ToolTip="Albarán"
+                    Margin="10,0,0,0"
+                    BorderThickness="1, 0, 1, 0"
+                    ToolTipService.ToolTip="Nuevo albarán"
                     Click="ButtonAlbaran_Click">
-                    <Image Source="ms-appx:///Assets/Albaran.png" Style="{StaticResource ButtonImageStyle}" />
+                    <Image Source="ms-appx:///Assets/NuevoAlbaran.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <!-- 1. Factura -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Factura">
-                    <Image Source="ms-appx:///Assets/Factura.png" Style="{StaticResource ButtonImageStyle}" />
+                    ToolTipService.ToolTip="Buscar albaranes">
+                    <Image Source="ms-appx:///Assets/BuscarAlbaran.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
                 <!-- 1. Pedido -->
                 <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Pedido">
-                    <Image Source="ms-appx:///Assets/Pedido.png" Style="{StaticResource ButtonImageStyle}" />
+                    ToolTipService.ToolTip="Buscar piezas">
+                    <Image Source="ms-appx:///Assets/BuscarPiezas.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
-                <!-- 1. Presupuesto -->
-                <Button Style="{StaticResource HorizontalButtonStyle}"
-                    ToolTipService.ToolTip="Presupuesto">
-                    <Image Source="ms-appx:///Assets/Presupuesto.png" Style="{StaticResource ButtonImageStyle}" />
-                </Button>
-                <Button Content="Nuevo" Style="{StaticResource HorizontalButtonStyle}"/>
-                <Button Content="Buscar Albaranes" Style="{StaticResource HorizontalButtonStyle}"/>
-                <Button Content="Buscar piezas" Style="{StaticResource HorizontalButtonStyle}"/>
             </StackPanel>
         </Grid>
 
         <!-- Área principal -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="2" Background="{StaticResource BackgroundColor}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <!-- Contenido a la izquierda -->
-            <Grid Grid.Column="0">
+            <!-- Sección Superior -->
+            <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Border Grid.Row="0" Background="Transparent">
-                    <!-- Contenido a la izquierda -->
-                    <Grid Grid.Column="0">
-                        <!-- 1) Cambiamos la primera fila a Auto para que se ajuste al contenido -->
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <!-- antes era "*" -->
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
 
-                        <!-- 2) Nuevo bloque superior con Document y Date -->
-                        <Border Grid.Row="0" Padding="8">
-                            <StackPanel
-                              Orientation="Horizontal"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Center"
-                              Spacing="16">
+                <!-- Bloque superior con Document y Date -->
+                <Border Grid.Row="0" Padding="8" Margin="5, 0, 0, 0">
+                    <StackPanel
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Spacing="16">
 
-                                <!-- Grupo Documento -->
-                                <TextBlock
-                                x:Name="TextBlockDocument"
-                                Text="DOCUMENTO"
-                                Style="{StaticResource TextBlockHeader}"/>
-                                <TextBox
-                                x:Name="TextBoxDocument"
-                                IsEnabled="False"
-                                Width="200"
-                                VerticalAlignment="Center"/>
+                        <!-- Grupo Documento -->
+                        <TextBlock
+                            x:Name="TextBlockDocument"
+                            Text="Albarán"
+                            Style="{StaticResource TextBlockHeader}"/>
+                        <TextBox
+                            x:Name="TextBoxDocument"
+                            Background="White"
+                            IsReadOnly="True"
+                            Width="200"
+                            VerticalAlignment="Center"/>
 
-                                <!-- Grupo Fecha -->
-                                <TextBlock
-                                Text="FECHA"
-                                Style="{StaticResource TextBlockHeader}"
-                                Margin="50, 0, 0, 0"/>
-                                <TextBox
-                                x:Name="TextBoxDate"
-                                IsEnabled="False"
-                                Width="200"
-                                VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
+                        <!-- Grupo Fecha -->
+                        <TextBlock
+                            Text="Fecha"
+                            Style="{StaticResource TextBlockHeader}"
+                            Margin="60, 0, 0, 0"/>
+                        <TextBox
+                            x:Name="TextBoxDate"
+                            Background="White"
+                            IsReadOnly="True"
+                            Width="200"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
 
-                        <!-- 2) Unificamos Intermedia+Inferior -->
-                        <Border Grid.Row="1" Padding="8">
-                            <Grid ColumnSpacing="16">
+                <Border Grid.Row="1" Padding="8">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <!-- Derecha: placeholder verde -->
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource PrimaryBorderStyle}">
+
+                            <Grid RowSpacing="8" ColumnSpacing="16">
+                                <!-- Dos columnas iguales -->
                                 <Grid.ColumnDefinitions>
-                                    <!-- Derecha: placeholder verde -->
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <!-- Cuatro filas -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- ID / Name -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Address -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Phone / CIF -->
+                                    <RowDefinition Height="Auto"/>
+                                    <!-- Email -->
+                                </Grid.RowDefinitions>
 
+                                <!-- Fila 0: Client ID -->
+                                <Grid Grid.Row="0" Grid.Column="0" ColumnSpacing="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockClientId"
+                                        Text="Id Cliente:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxClientId"
+                                        Text="{x:Bind ViewModel.SearchClientId, Mode=TwoWay}"
+                                        IsEnabled="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
-                                <Border
-                                    Grid.Column="0"
-                                    Background="#B0C4DD"
-                                    CornerRadius="4"
-                                    Margin="4"
-                                    Padding="8">
+                                <!-- Fila 0: Name -->
+                                <Grid Grid.Row="0" Grid.Column="1" ColumnSpacing="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockName"
+                                        Text="Nombre:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxName"
+                                        Text="{x:Bind ViewModel.SearchName, Mode=TwoWay}"
+                                        IsEnabled="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
-                                    <Grid RowSpacing="8" ColumnSpacing="16">
-                                        <!-- Dos columnas iguales -->
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <!-- Cuatro filas -->
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <!-- ID / Name -->
-                                            <RowDefinition Height="Auto"/>
-                                            <!-- Address -->
-                                            <RowDefinition Height="Auto"/>
-                                            <!-- Phone / CIF -->
-                                            <RowDefinition Height="Auto"/>
-                                            <!-- Email -->
-                                        </Grid.RowDefinitions>
+                                <!-- Fila 1: Address (span 2 cols) -->
+                                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ColumnSpacing="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="11*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockAddress"
+                                        Text="Dirección:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxAddress"
+                                        IsReadOnly="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
-                                        <!-- Fila 0: Client ID -->
-                                        <Grid Grid.Row="0" Grid.Column="0" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockClientId"
-                                                Text="Id Cliente:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxClientId"
-                                                Text="{x:Bind ViewModel.SearchClientId, Mode=TwoWay}"
-                                                IsEnabled="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
+                                <!-- Fila 2: Phone -->
+                                <Grid Grid.Row="2" Grid.Column="0" ColumnSpacing="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockPhone"
+                                        Text="Teléfono:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxPhone"
+                                        Text="{x:Bind ViewModel.SearchPhone, Mode=TwoWay}"
+                                        IsEnabled="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
-                                        <!-- Fila 0: Name -->
-                                        <Grid Grid.Row="0" Grid.Column="1" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockName"
-                                                Text="Nombre:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxName"
-                                                Text="{x:Bind ViewModel.SearchName, Mode=TwoWay}"
-                                                IsEnabled="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
+                                <!-- Fila 2: CIF/NIF -->
+                                <Grid Grid.Row="2" Grid.Column="1" ColumnSpacing="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockCifNif"
+                                        Text="CIF/NIF:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxCifNif"
+                                        Text="{x:Bind ViewModel.SearchCifNif, Mode=TwoWay}"
+                                        IsEnabled="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
-                                        <!-- Fila 1: Address (span 2 cols) -->
-                                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="11*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockAddress"
-                                                Text="Dirección:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxAddress"
-                                                IsReadOnly="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
-
-                                        <!-- Fila 2: Phone -->
-                                        <Grid Grid.Row="2" Grid.Column="0" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockPhone"
-                                                Text="Teléfono:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxPhone"
-                                                Text="{x:Bind ViewModel.SearchPhone, Mode=TwoWay}"
-                                                IsEnabled="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
-
-                                        <!-- Fila 2: CIF/NIF -->
-                                        <Grid Grid.Row="2" Grid.Column="1" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockCifNif"
-                                                Text="CIF/NIF:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxCifNif"
-                                                Text="{x:Bind ViewModel.SearchCifNif, Mode=TwoWay}"
-                                                IsEnabled="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
-
-                                        <!-- Fila 3: Email (span 2 cols) -->
-                                        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ColumnSpacing="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*"/>
-                                                <ColumnDefinition Width="11*"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock
-                                                x:Name="TextBlockEmail"
-                                                Text="Email:"
-                                                FontWeight="Bold"
-                                                VerticalAlignment="Center"
-                                                Grid.Column="0"/>
-                                            <TextBox
-                                                x:Name="TextBoxEmail"
-                                                Text="{x:Bind ViewModel.SearchEmail, Mode=TwoWay}"
-                                                IsEnabled="True"
-                                                HorizontalAlignment="Stretch"
-                                                Grid.Column="1"/>
-                                        </Grid>
-
-                                    </Grid>
-                                </Border>
-
-                                <Button
-                                    Grid.Column="1"
-                                    x:Name="ButtonSearch"
-                                    Click="ButtonSearch_Click"
-                                    Content="Buscar"
-                                    Width="100"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Margin="4, 10, 4, 4"/>
+                                <!-- Fila 3: Email (span 2 cols) -->
+                                <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" ColumnSpacing="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="11*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        x:Name="TextBlockEmail"
+                                        Text="Email:"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Grid.Column="0"/>
+                                    <TextBox
+                                        x:Name="TextBoxEmail"
+                                        Text="{x:Bind ViewModel.SearchEmail, Mode=TwoWay}"
+                                        IsEnabled="True"
+                                        HorizontalAlignment="Stretch"
+                                        Grid.Column="1"/>
+                                </Grid>
 
                             </Grid>
                         </Border>
+
+                        <Button
+                            Grid.Column="1"
+                            x:Name="ButtonSearch"
+                            Click="ButtonSearch_Click"
+                            Content="Buscar"
+                            Width="100"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Margin="4, 10, 4, 4"
+                            Background="{StaticResource FrameColor}"/>
+
                     </Grid>
                 </Border>
+            </Grid>
 
-                <!-- Sección Intermedia -->
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+            <!-- Sección Intermedia -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                    <Border Grid.Row="0">
-                        <ct:DataGrid
-                            x:Name="DataGridResults"
-                            ColumnWidth="*"
-                            MinColumnWidth="100"
-                            Grid.ColumnSpan="2"
-                            ItemsSource="{x:Bind ViewModel.Lines}"
-                            AutoGenerateColumns="False"
-                            IsReadOnly="True"
-                            RowBackground="{StaticResource RowBackgroundBrush}"
-                            AlternatingRowBackground="{StaticResource AlternatingRowBackgroundBrush}">
+                <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1" Margin="10, 0,0,0">
+                    <ct:DataGrid
+                        x:Name="DataGridResults"
+                        ColumnWidth="*"
+                        MinColumnWidth="100"
+                        Grid.ColumnSpan="2"
+                        ItemsSource="{x:Bind ViewModel.Lines}"
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                        RowBackground="{StaticResource RowBackgroundBrush}"
+                        AlternatingRowBackground="{StaticResource AlternatingRowBackgroundBrush}">
 
-                            <ct:DataGrid.Resources>
-                                <Color x:Key="BackgroundColor">#A9B2F0</Color>
-                                <Color x:Key="HoveredBackgroundColor">#A9B2F0</Color>
-                                <Color x:Key="PressedBackgroundColor">#FF00e5ff</Color>
-                                <StaticResource x:Key="DataGridColumnHeaderBackgroundColor" ResourceKey="BackgroundColor"/>
-                                <StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundColor" ResourceKey="HoveredBackgroundColor"/>
-                                <StaticResource x:Key="DataGridColumnHeaderPressedBackgroundColor" ResourceKey="PressedBackgroundColor"/>
-                            </ct:DataGrid.Resources>
+                        <ct:DataGrid.Resources>
+                            <Color x:Key="BackgroundColor">#E9ECEF</Color>
+                            <Color x:Key="HoveredBackgroundColor">#E9ECEF</Color>
+                            <Color x:Key="PressedBackgroundColor">#A5D8FF</Color>
+                            <StaticResource x:Key="DataGridColumnHeaderBackgroundColor" ResourceKey="BackgroundColor"/>
+                            <StaticResource x:Key="DataGridColumnHeaderHoveredBackgroundColor" ResourceKey="HoveredBackgroundColor"/>
+                            <StaticResource x:Key="DataGridColumnHeaderPressedBackgroundColor" ResourceKey="PressedBackgroundColor"/>
+                        </ct:DataGrid.Resources>
 
-                            <ct:DataGrid.ColumnHeaderStyle>
-                                <Style TargetType="ctp:DataGridColumnHeader">
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Foreground" Value="Black"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <ct:DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="ctp:DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </ct:DataGrid.ColumnHeaderStyle>
 
-                                </Style>
-                            </ct:DataGrid.ColumnHeaderStyle>
+                        <ct:DataGrid.Columns>
+                            <!-- Referencia Interna desde la pieza -->
+                            <ct:DataGridTextColumn
+                                Header="Referencia Interna"
+                                Binding="{Binding Pieza.ReferenciaInterna}" />
 
-                            <ct:DataGrid.Columns>
-                                <!-- Referencia Interna desde la pieza -->
-                                <ct:DataGridTextColumn
-                                    Header="Referencia Interna"
-                                    Binding="{Binding Pieza.ReferenciaInterna}" />
+                            <!-- Nombre de la pieza -->
+                            <ct:DataGridTextColumn
+                                Header="Nombre"
+                                Binding="{Binding Pieza.Nombre}" />
 
-                                <!-- Nombre de la pieza -->
-                                <ct:DataGridTextColumn
-                                    Header="Nombre"
-                                    Binding="{Binding Pieza.Nombre}" />
+                            <!-- Descripción de la pieza -->
+                            <ct:DataGridTextColumn
+                                Header="Descripción"
+                                Binding="{Binding Pieza.Descripcion}" />
 
-                                <!-- Descripción de la pieza -->
-                                <ct:DataGridTextColumn
-                                    Header="Descripción"
-                                    Binding="{Binding Pieza.Descripcion}" />
+                            <!-- Precio unitario de la línea -->
+                            <ct:DataGridTextColumn
+                                Header="Precio unitario"
+                                Binding="{Binding PrecioUnitario}" />
 
-                                <!-- Precio unitario de la línea -->
-                                <ct:DataGridTextColumn
-                                    Header="Precio unitario"
-                                    Binding="{Binding PrecioUnitario}" />
+                            <!-- Cantidad -->
+                            <ct:DataGridTextColumn
+                                Header="Cantidad"
+                                Binding="{Binding Cantidad}" />
 
-                                <!-- Cantidad -->
-                                <ct:DataGridTextColumn
-                                    Header="Cantidad"
-                                    Binding="{Binding Cantidad}" />
+                            <!-- Total línea -->
+                            <ct:DataGridTextColumn
+                                Header="Total línea"
+                                Binding="{Binding TotalLinea}" />
+                        </ct:DataGrid.Columns>
+                    </ct:DataGrid>
+                </Border>
 
-                                <!-- Total línea -->
-                                <ct:DataGridTextColumn
-                                    Header="Total línea"
-                                    Binding="{Binding TotalLinea}" />
-                            </ct:DataGrid.Columns>
-                        </ct:DataGrid>
-                    </Border>
+                <Grid 
+                    Grid.Column="1"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    Background="{StaticResource BackgroundColor}">
 
-                    <Grid 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
                         Grid.Column="1"
-                        VerticalAlignment="Stretch"
-                        HorizontalAlignment="Stretch"
-                            Background="#E5E6FA">
+                        Orientation="Vertical"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="30"
+                        Padding="4">
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Button
+                            x:Name="ButtonAddLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Añadir línea"
+                            Click="ButtonAddLine_Click">
+                            <Image
+                                Source="ms-appx:///Assets/add.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
 
-                        <StackPanel
-                            Grid.Column="1"
-                            Orientation="Vertical"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Spacing="30"
-                            Padding="4">
+                        <Button
+                            x:Name="ButtonEditLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Editar línea"
+                            Click="ButtonEditLine_Click">
+                            <Image
+                                Source="ms-appx:///Assets/edit.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
 
-                            <Button
-                                x:Name="ButtonAddLine"
-                                Style="{StaticResource DataGridButtonStyle}"
-                                ToolTipService.ToolTip="Añadir línea"
-                                Click="ButtonAddLine_Click">
-                                <Image
-                                    Source="ms-appx:///Assets/add.png"
-                                    Style="{StaticResource ButtonImageStyle}" />
-                            </Button>
+                        <Button
+                            x:Name="ButtonRemoveLine"
+                            Style="{StaticResource DataGridButtonStyle}"
+                            ToolTipService.ToolTip="Eliminar línea"
+                            Click="ButtonRemoveLine_Click">
+                            <Image
+                                Source="ms-appx:///Assets/substract.png"
+                                Style="{StaticResource ButtonImageStyle}" />
+                        </Button>
 
-                            <Button
-                                x:Name="ButtonEditLine"
-                                Style="{StaticResource DataGridButtonStyle}"
-                                ToolTipService.ToolTip="Editar línea"
-                                Click="ButtonEditLine_Click">
-                                <Image
-                                    Source="ms-appx:///Assets/edit.png"
-                                    Style="{StaticResource ButtonImageStyle}" />
-                            </Button>
-
-                            <Button
-                                x:Name="ButtonRemoveLine"
-                                Style="{StaticResource DataGridButtonStyle}"
-                                ToolTipService.ToolTip="Eliminar línea"
-                                Click="ButtonRemoveLine_Click">
-                                <Image
-                                    Source="ms-appx:///Assets/substract.png"
-                                    Style="{StaticResource ButtonImageStyle}" />
-                            </Button>
-
-                        </StackPanel>
-
-                    </Grid>
-
+                    </StackPanel>
 
                 </Grid>
 
-                <Border Grid.Row="3">
-                    <TextBlock Text="Sección Inferior" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
+
             </Grid>
+
+            <!-- Sección Inferior -->
+            <RelativePanel
+                Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Padding="20">
+
+                <!-- Vendedor -->
+                <TextBlock
+                    x:Name="TextBlockVendedor"
+                    Text="Vendedor:"
+                    FontWeight="Bold"
+                    Width="110"
+                    Height="36"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignTopWithPanel="True" 
+                    Margin="80,8,0,0"/>
+
+                <TextBox
+                    x:Name="TextBoxVendedor"
+                    Width="400"
+                    Height="36"
+                    IsReadOnly="True"
+                    RelativePanel.RightOf="TextBlockVendedor"
+                    RelativePanel.AlignVerticalCenterWith="TextBlockVendedor"
+                    Margin="8,0,0,0"/>
+
+                <!-- Botones de forma de pago -->
+                <TextBlock
+                    x:Name="TextBlockFormaPago"
+                    Text="Forma de pago:"
+                    FontWeight="Bold"
+                    Width="110"
+                    Height="36"
+                    RelativePanel.LeftOf="ComboBoxFormaPago"
+                    RelativePanel.AlignVerticalCenterWith="ComboBoxFormaPago"
+                    Margin="0,16,0,0"/>
+
+                <ComboBox
+                    x:Name="ComboBoxFormaPago"
+                    Width="400"
+                    Height="36"
+                    ItemsSource="{x:Bind ViewModel.PaymentMethods}"
+                    SelectedItem="{x:Bind ViewModel.SelectedPaymentMethod, Mode=TwoWay}"
+                    PlaceholderText="Forma de pago"
+                    RelativePanel.Below="TextBoxVendedor"
+                    RelativePanel.AlignLeftWith="TextBoxVendedor"
+                    Margin="8,8,0,0"/>
+
+                <!-- Observaciones -->
+                <TextBlock
+                    x:Name="TextBlockObservaciones"
+                    Text="Observaciones:"
+                    FontWeight="Bold"
+                    Width="110"
+                    Height="25"
+                    RelativePanel.LeftOf="TextBoxObservaciones"
+                    RelativePanel.AlignVerticalCenterWith="TextBoxObservaciones"
+                    Margin="0,8,0,0"/>
+
+                <RichEditBox
+                    x:Name="TextBoxObservaciones"
+                    Width="400"
+                    Height="75"
+                    RelativePanel.Below="ComboBoxFormaPago"
+                    RelativePanel.AlignLeftWith="ComboBoxFormaPago"
+                    Margin="8,8,0,0"/>
+
+                <!-- TOTAL al final (derecha) -->
+                <TextBlock
+                    x:Name="TextBlockTotal"
+                    Text="TOTAL"
+                    FontWeight="Bold"
+                    Width="150"
+                    Height="26"
+                    RelativePanel.AlignHorizontalCenterWith="TextBoxTotal"
+                    RelativePanel.Above="TextBoxTotal" />
+
+                <TextBox
+                    x:Name="TextBoxTotal"
+                    IsReadOnly="True"
+                    Width="150"
+                    Height="36"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWith="ComboBoxFormaPago"
+                    Margin="0,0,25,0"/>
+
+                <!-- IVA, a la izquierda de TOTAL -->
+                <TextBlock
+                    x:Name="TextBlockIva"
+                    Text="IVA (21%)"
+                    FontWeight="Bold"
+                    Width="150"
+                    Height="26"
+                    RelativePanel.AlignHorizontalCenterWith="TextBoxIva"
+                    RelativePanel.Above="TextBoxIva"/>
+
+                <TextBox
+                    x:Name="TextBoxIva"
+                    IsReadOnly="True"
+                    Width="150"
+                    Height="36"
+                    RelativePanel.LeftOf="TextBoxTotal"
+                    RelativePanel.AlignVerticalCenterWith="TextBoxTotal"
+                    Margin="0,0,18,0"/>
+
+                <!-- Base imponible, a la izquierda de IVA -->
+                <TextBlock
+                    x:Name="BaseLabel"
+                    Text="Base imponible"
+                    FontWeight="Bold"
+                    Width="150"
+                    Height="26"
+                    RelativePanel.AlignHorizontalCenterWith="TextBoxBase"
+                    RelativePanel.Above="TextBoxBase"/>
+
+                <TextBox
+                    x:Name="TextBoxBase"
+                    IsReadOnly="True"
+                    Width="150"
+                    Height="36"
+                    RelativePanel.LeftOf="TextBoxIva"
+                    RelativePanel.AlignVerticalCenterWith="TextBoxIva"
+                    Margin="0,0,18,0"/>
+
+                <!-- Botón principal al final (derecha, mismo nivel que Tarjeta/Efectivo) -->
+                <Button
+                    x:Name="ButtonEmitir"
+                    Style="{StaticResource ButtonConfirmStyle}"
+                    Content="Emitir albarán"
+                    RelativePanel.AlignVerticalCenterWith="TextBoxObservaciones"
+                    RelativePanel.AlignHorizontalCenterWith="TextBoxIva"
+                    Margin="80,16,0,0"/>
+            </RelativePanel>
 
         </Grid>
     </Grid>

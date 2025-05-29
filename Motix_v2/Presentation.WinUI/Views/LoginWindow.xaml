@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Title="Motix (Inicio de sesión)">
 
-    <Grid x:Name="layoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid x:Name="layoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource BackgroundColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="2*" />
@@ -43,6 +43,7 @@
                 </PasswordBox>
                 <Button
                     x:Name="LoginButton"
+                    Style="{StaticResource ButtonConfirmStyle}"
                     Content="Iniciar sesión"
                     HorizontalAlignment="Center"
                     Margin="0,20,0,0"

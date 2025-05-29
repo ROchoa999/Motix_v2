@@ -1,148 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls">
+<ResourceDictionary  
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+   xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls">  
 
-    <!-- ##########  COLORES POR DEFECTO  ########## -->
-    <Style TargetType="Border">
-        <Setter Property="Background" Value="#E5E6FA"/>
+   <!-- ##########  COLORES PRIMARIOS  ########## -->
+    <Color x:Key="FrameColor">#E9ECEF</Color>
+    <Color x:Key="NavColor">#F8F9FA</Color>
+    <Color x:Key="LabelColor">#7BBBF2</Color>
+    <Color x:Key="Label2Color">#0511F2</Color>
+    <Color x:Key="PrimaryButtonColor">#1B72BF</Color>
+    <Color x:Key="SecondaryButtonColor">#A5D8FF</Color>
+    <Color x:Key="BorderColor">#A5D8FF</Color>
+    <Color x:Key="BackgroundColor">#E7F5FF</Color>
+
+    <!-- ##########  COLORES POR DEFECTO  ########## -->  
+   <Style TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>  
+   </Style>  
+
+   <Style TargetType="Panel">
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>  
+   </Style>  
+
+   <Style TargetType="ct:DataGrid">
+        <Setter Property="Background" Value="White"/>
     </Style>
 
-    <Style TargetType="Panel">
-        <Setter Property="Background" Value="#E5E6FA"/>
+    <Style x:Key="ParentStyle" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource BackgroundColor}"/>
     </Style>
 
-    <Style TargetType="ct:DataGrid">
-        <Setter Property="Background" Value="#E5E6FA"/>
+    <Style x:Key="ButtonConfirmStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource PrimaryButtonColor}" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Width" Value="200" />
+        <Setter Property="Height" Value="50" />
     </Style>
 
     <!-- ##########  FORMATO PARA TABLAS  ########## -->
-    <SolidColorBrush x:Key="RowBackgroundBrush" Color="#CCD1F5" />
-    <SolidColorBrush x:Key="AlternatingRowBackgroundBrush" Color="#E5E6FA" />
+    <SolidColorBrush x:Key="RowBackgroundBrush" Color="{StaticResource LabelColor}" />
+    <SolidColorBrush x:Key="AlternatingRowBackgroundBrush" Color="{StaticResource BackgroundColor}" />  
 
-    <!-- ##########  SALES WINDOW  ########## -->
+   <!-- ##########  SALES WINDOW  ########## -->  
 
-    <!-- Estilo para el Border de la franja superior -->
-    <Style x:Key="TopRowGridStyle" TargetType="Border">
-        <Setter Property="Background" Value="DarkGray"/>
-    </Style>
+   <!-- Estilo para el Border de la franja superior -->  
+   <Style x:Key="TopRowGridStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Label2Color}"/>  
+   </Style>  
+   <!-- Estilo para la franja horizontal de 10 botones (Grid) -->  
+   <Style x:Key="HorizontalButtonsPanelStyle" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource FrameColor}"/>
+    </Style>  
 
-    <!-- Estilo para los botones de la franja superior -->
-    <Style x:Key="TopRowButtonStyle" TargetType="Button">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="DarkGray"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-    </Style>
-
-    <!-- Estilo para la franja horizontal de 10 botones (Grid) -->
-    <Style x:Key="HorizontalButtonsPanelStyle" TargetType="Grid">
-        <Setter Property="Background" Value="LightGray"/>
-    </Style>
-
-    <!-- Estilo para los botones de la franja horizontal -->
-    <Style x:Key="HorizontalButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="2,0"/>
-    </Style>
-
-    <!-- Estilo para los botones de la franja horizontal -->
-    <Style x:Key="DataGridButtonStyle" TargetType="Button">
-        <Setter Property="Background" Value="Transparent"/>
+   <!-- Estilo para los botones de la franja horizontal -->  
+   <Style x:Key="HorizontalButtonStyle" TargetType="Button">  
+       <Setter Property="Background" Value="Transparent"/>  
+       <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0, 0, 0.5, 0"/>
+        <Setter Property="Padding" Value="5, 0"/>
+        <Setter Property="Margin" Value="0,2"/>
         <Setter Property="BorderBrush" Value="Black"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Margin" Value="2,0"/>
-        <Setter Property="CornerRadius" Value="10"/>
+    </Style>  
+
+   <!-- Estilo para los botones de la franja vertical -->  
+   <Style x:Key="DataGridButtonStyle" TargetType="Button">  
+       <Setter Property="Background" Value="Transparent"/>  
+       <Setter Property="BorderBrush" Value="Black"/>  
+       <Setter Property="Padding" Value="0"/>  
+       <Setter Property="Margin" Value="2,0"/>  
+       <Setter Property="CornerRadius" Value="10"/>  
+   </Style>  
+
+   <!-- Estilo para las imagenes de los botones pequeños -->  
+   <Style x:Key="ButtonImageStyle" TargetType="Image">  
+       <Setter Property="Width" Value="30"/>  
+       <Setter Property="Height" Value="30"/>  
+   </Style>  
+
+   <!-- Estilo para los textos de la cabecera del MainWindow del documento y la fecha -->  
+   <Style x:Key="TextBlockHeader" TargetType="TextBlock">  
+       <Setter Property="FontWeight" Value="Bold"/>  
+       <Setter Property="FontSize" Value="16"/>  
+       <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource Label2Color}"/>  
+   </Style>  
+
+   <!-- Estilo para el grid del cliente -->
+    <Style x:Key="PrimaryBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BorderColor}" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="Padding" Value="8" />
     </Style>
 
-    <!-- Estilo para las imagenes de los botones horizontales -->
-    <Style x:Key="ButtonImageStyle" TargetType="Image">
-        <Setter Property="Width" Value="30"/>
-        <Setter Property="Height" Value="30"/>
-    </Style>
+   <!-- ##########  LOGIN WINDOW  ########## -->  
 
-    <!-- Estilo para la columna vertical (Grid) -->
-    <Style x:Key="VerticalButtonsPanelStyle" TargetType="Grid">
-        <!-- Fondo azul -->
-        <Setter Property="Background" Value="Blue"/>
-    </Style>
+   <!-- Estilo para los labels en TextBlock -->  
+   <Style x:Key="LoginLabelsStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Label2Color}"/>  
+       <Setter Property="FontWeight" Value="Bold"/>  
+       <Setter Property="FontSize" Value="18"/>  
+   </Style>  
 
-    <!-- Estilo para los botones de la columna vertical -->
-    <Style x:Key="VerticalButtonStyle" TargetType="Button">
-        <!-- Márgenes mínimos, texto blanco, fondo azul, sin borde -->
-        <Setter Property="Width" Value="35"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="Blue"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
+   <!--   
+       Estilo para el borde que envuelve al StackPanel de login.  
+       CornerRadius=10 para esquinas redondeadas,  
+       BorderBrush en DarkGray y grosor 1px. -->  
+   <Style x:Key="LoginFormBorderStyle" TargetType="Border">  
+       <Setter Property="Background" Value="LightGray"/>  
+       <Setter Property="BorderBrush" Value="LightGray"/>  
+       <Setter Property="BorderThickness" Value="1"/>  
+       <Setter Property="CornerRadius" Value="10"/>  
+       <Setter Property="Padding" Value="20"/>  
+       <Setter Property="Margin" Value="0"/>  
+   </Style>   
 
-    <!-- Estilo para los textos de la cabecera del MainWindow del documento y la fecha -->
-    <Style x:Key="TextBlockHeader" TargetType="TextBlock">
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="Blue"/>
-    </Style>
-
-    <!-- Estilo para lso botones de la primera sección -->
-    <Style x:Key="GroupButtonStyle" TargetType="Button" BasedOn="{StaticResource HorizontalButtonStyle}">
-        <Setter Property="Width" Value="120"/>
-        <Setter Property="Height" Value="50"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-
-    <Style x:Key="StackPanelGroupButtons" TargetType="StackPanel">
-        <Setter Property="Background" Value="#B0C4DD"/>
-    </Style>
-
-    <!-- Cabeceras de la tabla -->
-    <Style x:Key="TableHeaderStyle" TargetType="TextBlock">
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="4"/>
-    </Style>
-
-    <!-- ##########  LOGIN WINDOW  ########## -->
-
-    <!-- Estilo para los labels en TextBlock -->
-    <Style x:Key="LoginLabelsStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="#0065C3"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="FontSize" Value="18"/>
-    </Style>
-
-    <!-- 
-        Estilo para el borde que envuelve al StackPanel de login.
-        CornerRadius=10 para esquinas redondeadas,
-        BorderBrush en DarkGray y grosor 1px. -->
-    <Style x:Key="LoginFormBorderStyle" TargetType="Border">
-        <Setter Property="Background" Value="LightGray"/>
-        <Setter Property="BorderBrush" Value="LightGray"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="20"/>
-        <Setter Property="Margin" Value="0"/>
-    </Style>
-    
-    <!-- Estilo para mensajes de error en TextBlock -->
-    <Style x:Key="ErrorMessage" TargetType="Border">
-        <Setter Property="Background" Value="Red"/>
-        <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="Padding" Value="20"/>
-        <Setter Property="Margin" Value="0"/>
-        
-    </Style>
-
-    <!-- ##########  PART WINDOW  ########## -->
-    <Style x:Key="RightAlignedCell" TargetType="TextBlock">
-        <Setter Property="TextAlignment" Value="Right"/>
-    </Style>
+   <!-- ##########  PART WINDOW  ########## -->  
+   <Style x:Key="RightAlignedCell" TargetType="TextBlock">  
+       <Setter Property="TextAlignment" Value="Right"/>  
+   </Style>  
 
 </ResourceDictionary>
