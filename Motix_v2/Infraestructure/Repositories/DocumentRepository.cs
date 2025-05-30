@@ -33,12 +33,19 @@ namespace Motix_v2.Infraestructure.Repositories
             _dbSet.FindAsync(new object[] { key }, ct).AsTask();
 
         public async Task<IEnumerable<Document>> GetAllAsync(CancellationToken ct = default) =>
-            await _dbSet.AsNoTracking().ToListAsync(ct);
+            await _dbSet
+                .Include(d => d.Cliente)
+                .AsNoTracking()
+                .ToListAsync(ct);
 
         public async Task<IEnumerable<Document>> FindAsync(
             Expression<Func<Document, bool>> predicate,
             CancellationToken ct = default) =>
-            await _dbSet.AsNoTracking().Where(predicate).ToListAsync(ct);
+            await _dbSet
+                .Include(d => d.Cliente)
+                .AsNoTracking()
+                .Where(predicate)
+                .ToListAsync(ct);
 
         // ----------- Escritura de documentos -----------
 

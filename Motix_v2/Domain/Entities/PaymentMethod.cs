@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Motix_v2.Domain.Entities
 {
-    [Table("formasdepago")]
+    [Table("formaspago")]
     public class PaymentMethod
     {
         [Key]

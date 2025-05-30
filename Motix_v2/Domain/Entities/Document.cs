@@ -9,7 +9,7 @@ namespace Motix_v2.Domain.Entities
     public class Document
     {
         [Key]
-        [Column("id")]
+        [Column("id", TypeName = "varchar(36)")]
         public string Id { get; set; } = null!;
 
         [Column("clienteid")]
@@ -44,7 +44,7 @@ namespace Motix_v2.Domain.Entities
         public string EstadoReparto { get; set; } = null!;
 
         [Required]
-        [Column("baseimponible", TypeName = "numeric(18,2)")]
+        [Column("base", TypeName = "numeric(18,2)")]
         public decimal BaseImponible { get; set; }
 
         [Required]

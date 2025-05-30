@@ -60,6 +60,8 @@ namespace Motix_v2.Presentation.WinUI.Views
                     ViewModel.SearchCifNif = c.CifNif ?? string.Empty;
                     ViewModel.SearchPhone = c.Telefono ?? string.Empty;
                     ViewModel.SearchEmail = c.Email ?? string.Empty;
+
+                    ViewModel.SelectedCustomer = c;
                 });
             };
 

@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Motix_v2.Infraestructure.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Xaml.Input;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
@@ -18,6 +19,10 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly AuthenticationService _authService;
+
+        public string CurrentInvoiceId { get; private set; } = string.Empty;
+        public DateTime CurrentInvoiceDate { get; private set; }
+
         public string DocumentId { get; } = Guid.NewGuid().ToString();
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -31,6 +36,36 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         public string SearchPhone { get; set; } = string.Empty;
         public string SearchEmail { get; set; } = string.Empty;
 
+        private Customer? _selectedCustomer;
+        public Customer? SelectedCustomer
+        {
+            get => _selectedCustomer;
+            set
+            {
+                if (_selectedCustomer != value)
+                {
+                    _selectedCustomer = value;
+                    OnPropertyChanged();
+                    // Forzar re-evaluación del comando
+                    EmitInvoiceCommand.NotifyCanExecuteChanged();
+                }
+            }
+        }
+
+        private string _observaciones = string.Empty;
+        public string Observaciones
+        {
+            get => _observaciones;
+            set
+            {
+                if (_observaciones != value)
+                {
+                    _observaciones = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         // Colección de líneas de documento en memoria (sin persistir)
         public ObservableCollection<DocumentLine> Lines { get; }
             = new ObservableCollection<DocumentLine>();
@@ -39,6 +74,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         public decimal BaseImponible { get; private set; }
         public decimal Iva21 { get; private set; }
         public decimal TotalFactura { get; private set; }
+        public XamlUICommand EmitInvoiceCommand { get; }
 
         // Rellenar el nombre del vendedor con el usuario actual
         private string _vendedor = string.Empty;
@@ -68,8 +104,14 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         {
             _unitOfWork = unitOfWork;
             _authService = App.Host.Services.GetRequiredService<AuthenticationService>();
+            _authService.PropertyChanged += AuthServiceOnPropertyChanged;
             Vendedor = _authService.CurrentUserName;
             Lines.CollectionChanged += (s, e) => RecalculateTotals();
+
+            EmitInvoiceCommand = new XamlUICommand();
+            EmitInvoiceCommand.CanExecuteRequested += OnEmitInvoiceCanExecute;
+            EmitInvoiceCommand.ExecuteRequested += OnEmitInvoiceExecute;
+
             RecalculateTotals();
         }
 
@@ -134,6 +176,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 {
                     _selectedPaymentMethod = value;
                     OnPropertyChanged();
+                    EmitInvoiceCommand.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -149,7 +192,85 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             OnPropertyChanged(nameof(BaseImponible));
             OnPropertyChanged(nameof(Iva21));
             OnPropertyChanged(nameof(TotalFactura));
+
+            EmitInvoiceCommand.NotifyCanExecuteChanged();
         }
 
+        private async Task EmitInvoiceAsync()
+        {
+            // Validación previa
+            if (SelectedCustomer == null) return;
+            if (!Lines.Any()) return;
+            if (string.IsNullOrEmpty(SelectedPaymentMethod)) return;
+
+            // Resolver forma de pago
+            var pagos = await _unitOfWork.PaymentMethods.FindAsync(
+                pm => pm.Nombre == SelectedPaymentMethod);
+            var formaPago = pagos.FirstOrDefault();
+            if (formaPago == null)
+                throw new InvalidOperationException(
+                  $"Forma de pago '{SelectedPaymentMethod}' no encontrada.");
+
+            // Crear documento (cabecera)
+            var doc = new Document
+            {
+                Id = DocumentId,
+                ClienteId = SelectedCustomer.Id,
+                UsuarioId = _authService.CurrentUser!.Id,
+                Fecha = DateTimeOffset.UtcNow.UtcDateTime,
+                TipoDocumento = "Albaran",
+                EstadoPago = SelectedPaymentMethod,
+                FormaPagoId = formaPago.Id,
+                Observaciones = Observaciones,
+                BaseImponible = BaseImponible,
+                Iva = Iva21,
+                Total = TotalFactura,
+                EstadoReparto = EstadoReparto.Pendiente.ToString(),
+            };
+
+            await _unitOfWork.Documents.AddAsync(doc);
+
+            // Añadir líneas con el mismo GUID de documento
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+            foreach (var line in Lines)
+            {
+                line.DocumentoId = doc.Id;
+                line.Document = null;
+                line.Pieza = null;
+                await docRepo.AddLineAsync(line);
+            }
+            await _unitOfWork.SaveChangesAsync();
+
+            // Actualizar propiedades de enlace
+            CurrentInvoiceId = doc.Id;
+            CurrentInvoiceDate = doc.Fecha;
+            OnPropertyChanged(nameof(CurrentInvoiceId));
+            OnPropertyChanged(nameof(CurrentInvoiceDate));
+        }
+
+        private void OnEmitInvoiceCanExecute(XamlUICommand sender, CanExecuteRequestedEventArgs args)
+        {
+            var hasLines = Lines.Any();
+            var hasClient = SelectedCustomer != null;
+            var hasPago = !string.IsNullOrEmpty(SelectedPaymentMethod);
+            var hasUser = _authService.CurrentUser != null;
+
+            args.CanExecute = hasLines && hasClient && hasPago && hasUser;
+        }
+
+        private async void OnEmitInvoiceExecute(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            // Llama al método que implementa la lógica completa
+            await EmitInvoiceAsync();
+        }
+
+        private void AuthServiceOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AuthenticationService.CurrentUser))
+            {
+                // Fuerza al comando a re-evaluar su CanExecute
+                EmitInvoiceCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
 }

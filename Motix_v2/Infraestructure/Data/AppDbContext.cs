@@ -80,7 +80,7 @@ namespace Motix_v2.Infraestructure.Data
             
             mb.Entity<PaymentMethod>(e =>
                         {
-                e.ToTable("formasdepago");
+                e.ToTable("formaspago");
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Nombre)
                                 .HasMaxLength(50)
@@ -117,6 +117,7 @@ namespace Motix_v2.Infraestructure.Data
                 e.Property(x => x.Fecha)
                                   .IsRequired();
                 e.Property(x => x.TipoDocumento)
+                                  .HasColumnName("tipodocumento")
                                   .HasMaxLength(20)
                                   .IsRequired();
                 e.Property(x => x.EstadoPago)

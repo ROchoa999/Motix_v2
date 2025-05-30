@@ -75,6 +75,7 @@ namespace Motix_v2.Presentation.WinUI.Views
                     // Guardar el usuario logueado en el servicio de sesión
                     var auth = _services.GetRequiredService<Infraestructure.Services.AuthenticationService>();
                     auth.CurrentUserName = usuario;
+                    auth.CurrentUser = usuarioEnt;
                     // Login correcto: abrir ventana principal
                     var main = new SalesWindow();
                     main.Activate();

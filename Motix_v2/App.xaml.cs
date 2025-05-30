@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using WinRT.Interop;
 using Motix_v2.Infraestructure.UnitOfWork;
 using Motix_v2.Presentation.WinUI.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Motix_v2
 {
@@ -39,7 +40,9 @@ namespace Motix_v2
                     services.AddSingleton<Infraestructure.Services.AuthenticationService>();
 
                     services.AddDbContext<AppDbContext>(opt =>
-                        opt.UseNpgsql(ctx.Configuration.GetConnectionString("MotixDb")));
+                        opt.UseNpgsql(ctx.Configuration.GetConnectionString("MotixDb"))
+                        .EnableSensitiveDataLogging()
+                        .LogTo(Console.WriteLine, LogLevel.Information));
 
                     services.AddScoped<IRepository<Customer>, CustomerRepository>();
                     services.AddScoped<IRepository<User>, UserRepository>();
@@ -57,6 +60,7 @@ namespace Motix_v2
                     services.AddTransient<SearchResultsViewModel>();
                     services.AddTransient<DeliveryViewModel>();
                     services.AddTransient<StockItemViewModel>();
+
                 })
                 .Build();
 
@@ -67,13 +71,13 @@ namespace Motix_v2
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _salesWindow = new SalesWindow();
-            _salesWindow.Activate();
+            _loginWindow = new LoginWindow();
+            _loginWindow.Activate();
 
-            IntPtr hWnd = WindowNative.GetWindowHandle(_salesWindow);
+            IntPtr hWnd = WindowNative.GetWindowHandle(_loginWindow);
             ShowWindow(hWnd, SW_MAXIMIZE);
         }
 
-        private SalesWindow? _salesWindow;
+        private LoginWindow? _loginWindow;
     }
 }

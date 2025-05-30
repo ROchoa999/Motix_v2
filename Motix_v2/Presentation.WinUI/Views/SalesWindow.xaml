@@ -93,6 +93,7 @@
                             x:Name="TextBoxDocument"
                             Background="White"
                             IsReadOnly="True"
+                            Text="{x:Bind ViewModel.CurrentInvoiceId, Mode=OneWay}"
                             Width="200"
                             VerticalAlignment="Center"/>
 
@@ -105,6 +106,7 @@
                             x:Name="TextBoxDate"
                             Background="White"
                             IsReadOnly="True"
+                            Text="{x:Bind ViewModel.CurrentInvoiceDate, Mode=OneWay}"
                             Width="200"
                             VerticalAlignment="Center"/>
                     </StackPanel>
@@ -535,6 +537,7 @@
                     x:Name="ButtonEmitir"
                     Style="{StaticResource ButtonConfirmStyle}"
                     Content="Emitir albarán"
+                    Command="{x:Bind ViewModel.EmitInvoiceCommand, Mode=OneWay}"
                     RelativePanel.AlignVerticalCenterWith="TextBoxObservaciones"
                     RelativePanel.AlignHorizontalCenterWith="TextBoxIva"
                     Margin="80,16,0,0"/>
