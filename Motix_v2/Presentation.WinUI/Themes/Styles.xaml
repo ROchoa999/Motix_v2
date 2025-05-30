@@ -49,7 +49,7 @@
 
    <!-- Estilo para el Border de la franja superior -->  
    <Style x:Key="TopRowGridStyle" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource Label2Color}"/>  
+        <Setter Property="Background" Value="{StaticResource PrimaryButtonColor}"/>  
    </Style>  
    <!-- Estilo para la franja horizontal de 10 botones (Grid) -->  
    <Style x:Key="HorizontalButtonsPanelStyle" TargetType="Grid">
@@ -86,7 +86,7 @@
        <Setter Property="FontWeight" Value="Bold"/>  
        <Setter Property="FontSize" Value="16"/>  
        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="{StaticResource Label2Color}"/>  
+        <Setter Property="Foreground" Value="{StaticResource PrimaryButtonColor}"/>  
    </Style>  
 
    <!-- Estilo para el grid del cliente -->
@@ -101,7 +101,7 @@
 
    <!-- Estilo para los labels en TextBlock -->  
    <Style x:Key="LoginLabelsStyle" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{StaticResource Label2Color}"/>  
+        <Setter Property="Foreground" Value="{StaticResource PrimaryButtonColor}"/>  
        <Setter Property="FontWeight" Value="Bold"/>  
        <Setter Property="FontSize" Value="18"/>  
    </Style>  
