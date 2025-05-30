@@ -127,6 +127,9 @@ namespace Motix_v2.Infraestructure.Data
                 e.Property(x => x.EstadoReparto)
                                   .HasMaxLength(20)
                                   .IsRequired();
+                e.Property(x => x.BaseImponible);
+                e.Property(x => x.Iva);
+                e.Property(x => x.Total);
                 e.HasMany(d => d.Lines)
                                  .WithOne(l => l.Document)
                                  .HasForeignKey(l => l.DocumentoId)

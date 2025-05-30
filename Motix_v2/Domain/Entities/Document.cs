@@ -43,6 +43,18 @@ namespace Motix_v2.Domain.Entities
         [Column("estadoreparto")]
         public string EstadoReparto { get; set; } = null!;
 
+        [Required]
+        [Column("baseimponible", TypeName = "numeric(18,2)")]
+        public decimal BaseImponible { get; set; }
+
+        [Required]
+        [Column("iva", TypeName = "numeric(18,2)")]
+        public decimal Iva { get; set; }
+
+        [Required]
+        [Column("total", TypeName = "numeric(18,2)")]
+        public decimal Total { get; set; }
+
         public ICollection<DocumentLine> Lines { get; set; } = new List<DocumentLine>();
     }
 }
