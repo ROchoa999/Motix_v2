@@ -36,6 +36,15 @@ namespace Motix_v2.Presentation.WinUI.Views
             }
         }
 
+        private void OnClearFiltersClicked(object sender, RoutedEventArgs e)
+        {
+            // Limpiamos las fechas en el VM y recargamos todo
+            ViewModel.StartDate = null;
+            ViewModel.EndDate = null;
+            ViewModel.LoadCommand.Execute(null);
+        }
+
+
         public DocumentViewModel ViewModel { get; }
 
         private void OnVolverClicked(object sender, RoutedEventArgs e)

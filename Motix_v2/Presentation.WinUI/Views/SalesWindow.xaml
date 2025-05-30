@@ -106,7 +106,7 @@
                             x:Name="TextBoxDate"
                             Background="White"
                             IsReadOnly="True"
-                            Text="{x:Bind ViewModel.CurrentInvoiceDate, Mode=OneWay}"
+                            Text="{x:Bind ViewModel.CurrentInvoiceDateFormatted, Mode=OneWay}"
                             Width="200"
                             VerticalAlignment="Center"/>
                     </StackPanel>

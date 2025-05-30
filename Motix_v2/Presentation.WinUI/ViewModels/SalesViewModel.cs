@@ -21,7 +21,8 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         private readonly AuthenticationService _authService;
 
         public string CurrentInvoiceId { get; private set; } = string.Empty;
-        public DateTime CurrentInvoiceDate { get; private set; }
+        public DateTimeOffset CurrentInvoiceDate { get; private set; }
+        public string CurrentInvoiceDateFormatted => CurrentInvoiceDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
 
         public string DocumentId { get; } = Guid.NewGuid().ToString();
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
@@ -211,13 +212,16 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 throw new InvalidOperationException(
                   $"Forma de pago '{SelectedPaymentMethod}' no encontrada.");
 
+            var madridTz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Madrid");
+            var madridNow = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, madridTz);
+
             // Crear documento (cabecera)
             var doc = new Document
             {
                 Id = DocumentId,
                 ClienteId = SelectedCustomer.Id,
                 UsuarioId = _authService.CurrentUser!.Id,
-                Fecha = DateTimeOffset.UtcNow.UtcDateTime,
+                Fecha = madridNow,
                 TipoDocumento = "Albaran",
                 EstadoPago = SelectedPaymentMethod,
                 FormaPagoId = formaPago.Id,

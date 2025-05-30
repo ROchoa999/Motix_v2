@@ -16,6 +16,35 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
     {
         private readonly IUnitOfWork _uow;
 
+        private DateTimeOffset? _startDate;
+        public DateTimeOffset? StartDate
+        {
+            get => _startDate;
+            set
+            {
+                if (_startDate != value)
+                {
+                    _startDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private DateTimeOffset? _endDate;
+        public DateTimeOffset? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                if (_endDate != value)
+                {
+                    _endDate = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         public DocumentViewModel(IUnitOfWork uow)
         {
             _uow = uow;
@@ -65,10 +94,18 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         public async Task SearchAsync()
         {
+            DateTime? fromUtc = StartDate.HasValue 
+                ? DateTime.SpecifyKind(StartDate.Value.Date, DateTimeKind.Utc)
+                : (DateTime?)null;
+
+            DateTime? toUtc = EndDate.HasValue
+                ? DateTime.SpecifyKind(EndDate.Value.Date.AddDays(1).AddTicks(-1), DateTimeKind.Utc)
+                : (DateTime?)null;
+
             var results = await _uow.Documents.FindAsync(d =>
-                (string.IsNullOrWhiteSpace(SearchDocumentId) || d.Id.Contains(SearchDocumentId)) &&
-                (SelectedClientName == null || d.Cliente.Nombre == SelectedClientName) &&
-                (SelectedEstadoReparto == null || d.EstadoReparto == SelectedEstadoReparto.ToString()));
+                (!fromUtc.HasValue || d.Fecha >= fromUtc.Value)
+                && (!toUtc.HasValue || d.Fecha <= toUtc.Value)
+            );
 
             DocumentItems.Clear();
             foreach (var d in results)
@@ -76,6 +113,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
             UpdateClientNames();
         }
+
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string? name = null)

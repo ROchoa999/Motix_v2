@@ -11,17 +11,68 @@
     <Grid DataContext="{Binding ViewModel, ElementName=This}">
         <!-- 3 filas: búsqueda, tabla y botón Volver -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0" Margin="16" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <!-- Label Desde -->
+                <ColumnDefinition Width="*"/>
+                <!-- DatePicker Desde -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Label Hasta -->
+                <ColumnDefinition Width="*"/>
+                <!-- DatePicker Hasta -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Botón Filtrar -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Botón Limpiar -->
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="0"
+                Text="Desde:"
+                VerticalAlignment="Center"/>
+
+            <CalendarDatePicker
+                Grid.Column="1"
+                Date="{x:Bind ViewModel.StartDate, Mode=TwoWay}"
+                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                HorizontalAlignment="Stretch"/>
+
+            <TextBlock
+                Grid.Column="2"
+                Text="Hasta:"
+                VerticalAlignment="Center"/>
+
+            <CalendarDatePicker
+                Grid.Column="3"
+                Date="{x:Bind ViewModel.EndDate, Mode=TwoWay}"
+                DateFormat="{}{day.integer}/{month.integer}/{year.full}"
+                HorizontalAlignment="Stretch"/>
+
+            <Button
+                Grid.Column="4"
+                Content="Filtrar"
+                Command="{x:Bind ViewModel.SearchCommand}" />
+
+            <Button
+                Grid.Column="5"
+                Content="Limpiar"
+                Click="OnClearFiltersClicked"/>
+        </Grid>
+
         <!-- Fila 1: DataGrid de documentos con ordenado -->
         <tv:TableView
             x:Name="TableViewDocuments"
-            Grid.Row="0"
+            Grid.Row="1"
             ItemsSource="{x:Bind ViewModel.DocumentItems}"
             AutoGenerateColumns="False"
             Width="auto"
+            IsReadOnly="True"
             Margin="16">
             <tv:TableView.Columns>
                 <tv:TableViewTextColumn
@@ -34,7 +85,7 @@
                     Width="auto"/>
                 <tv:TableViewTextColumn
                     Header="Fecha"
-                    Binding="{Binding Fecha}"
+                    Binding="{Binding FechaFormateada}"
                     Width="auto"/>
                 <tv:TableViewNumberColumn
                     Header="Total (€)"

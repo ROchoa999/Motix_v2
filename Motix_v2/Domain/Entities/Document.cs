@@ -22,8 +22,8 @@ namespace Motix_v2.Domain.Entities
         public int UsuarioId { get; set; }
 
         [Required]
-        [Column("fecha")]
-        public DateTime Fecha { get; set; }
+        [Column("fecha", TypeName = "timestamptz")]
+        public DateTimeOffset Fecha { get; set; }
 
         [Required]
         [Column("tipodocumento")]
@@ -56,5 +56,16 @@ namespace Motix_v2.Domain.Entities
         public decimal Total { get; set; }
 
         public ICollection<DocumentLine> Lines { get; set; } = new List<DocumentLine>();
+
+        [NotMapped]
+        public string FechaFormateada
+        {
+            get
+            {
+                return Fecha
+                    .ToLocalTime()
+                    .ToString("dd/MM/yyyy HH:mm");
+            }
+        }
     }
 }
