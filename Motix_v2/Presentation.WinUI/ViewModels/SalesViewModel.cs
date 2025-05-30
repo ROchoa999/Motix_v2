@@ -22,7 +22,18 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         public string CurrentInvoiceId { get; private set; } = string.Empty;
         public DateTimeOffset CurrentInvoiceDate { get; private set; }
-        public string CurrentInvoiceDateFormatted => CurrentInvoiceDate.ToLocalTime().ToString("dd/MM/yyyy HH:mm");
+        public string CurrentInvoiceDateFormatted
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CurrentInvoiceId))
+                    return string.Empty;
+
+                return CurrentInvoiceDate
+                    .ToLocalTime()
+                    .ToString("dd/MM/yyyy HH:mm");
+            }
+        }
 
         public string DocumentId { get; } = Guid.NewGuid().ToString();
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
@@ -212,16 +223,13 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 throw new InvalidOperationException(
                   $"Forma de pago '{SelectedPaymentMethod}' no encontrada.");
 
-            var madridTz = TimeZoneInfo.FindSystemTimeZoneById("Europe/Madrid");
-            var madridNow = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, madridTz);
-
             // Crear documento (cabecera)
             var doc = new Document
             {
                 Id = DocumentId,
                 ClienteId = SelectedCustomer.Id,
                 UsuarioId = _authService.CurrentUser!.Id,
-                Fecha = madridNow,
+                Fecha = DateTimeOffset.UtcNow,
                 TipoDocumento = "Albaran",
                 EstadoPago = SelectedPaymentMethod,
                 FormaPagoId = formaPago.Id,
@@ -250,6 +258,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             CurrentInvoiceDate = doc.Fecha;
             OnPropertyChanged(nameof(CurrentInvoiceId));
             OnPropertyChanged(nameof(CurrentInvoiceDate));
+            OnPropertyChanged(nameof(CurrentInvoiceDateFormatted));
         }
 
         private void OnEmitInvoiceCanExecute(XamlUICommand sender, CanExecuteRequestedEventArgs args)
