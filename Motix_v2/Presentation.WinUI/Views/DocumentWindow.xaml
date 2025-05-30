@@ -4,115 +4,62 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ct="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:ctp="using:CommunityToolkit.WinUI.UI.Controls.Primitives"
+    xmlns:tv="using:WinUI.TableView"
     x:Name="This"
     Title="Buscar Documentos">
 
     <Grid DataContext="{Binding ViewModel, ElementName=This}">
         <!-- 3 filas: búsqueda, tabla y botón Volver -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- Búsqueda -->
             <RowDefinition Height="*"/>
-            <!-- DataGrid -->
             <RowDefinition Height="Auto"/>
-            <!-- Botones -->
         </Grid.RowDefinitions>
 
-        <!-- Fila 0: Filtros de búsqueda -->
-        <!-- Fila 0: Filtros de búsqueda -->
-        <Grid Grid.Row="0" Margin="16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- 1) ID Documento -->
-            <TextBox
-                PlaceholderText="ID Documento"
-                Text="{x:Bind ViewModel.SearchDocumentId, Mode=TwoWay}"
-                Grid.Column="0"/>
-
-            <!-- 2) Cliente (picklist) -->
-            <ComboBox
-                Grid.Column="1"
-                Width="200"
-                PlaceholderText="Cliente…"
-                ItemsSource="{x:Bind ViewModel.ClientNames}"
-                SelectedItem="{x:Bind ViewModel.SelectedClientName, Mode=TwoWay}"
-                Margin="8,0,0,0"/>
-
-            <!-- 3) EstadoReparto (picklist) -->
-            <ComboBox
-                Grid.Column="2"
-                Width="200"
-                PlaceholderText="Estado Reparto…"
-                ItemsSource="{x:Bind ViewModel.EstadoRepartoItems}"
-                DisplayMemberPath="Value" 
-                SelectedItem="{x:Bind ViewModel.SelectedEstadoReparto, Mode=TwoWay}"
-                Margin="8,0,0,0"/>
-
-            <!-- 4) Botón Buscar -->
-            <Button
-      Grid.Column="3"
-      Content="Buscar"
-      Command="{x:Bind ViewModel.SearchCommand}"
-      Margin="8,0,0,0"/>
-        </Grid>
-
         <!-- Fila 1: DataGrid de documentos con ordenado -->
-        <ct:DataGrid
-            x:Name="DataGridDocuments"
-            Grid.Row="1"
+        <tv:TableView
+            x:Name="TableViewDocuments"
+            Grid.Row="0"
             ItemsSource="{x:Bind ViewModel.DocumentItems}"
             AutoGenerateColumns="False"
-            IsReadOnly="True"
-            CanUserSortColumns="True"
-            ColumnWidth="*"
+            Width="auto"
             Margin="16">
-
-            <ct:DataGrid.Columns>
-                <ct:DataGridTextColumn
+            <tv:TableView.Columns>
+                <tv:TableViewTextColumn
                     Header="ID Documento"
-                    Binding="{Binding DocumentoId}" />
-
-                <ct:DataGridTextColumn
+                    Binding="{Binding Id}"
+                    Width="auto"/>
+                <tv:TableViewTextColumn
                     Header="Cliente"
-                    Binding="{Binding Cliente.Nombre}" />
-
-                <ct:DataGridTextColumn
+                    Binding="{Binding Cliente.Nombre}"
+                    Width="auto"/>
+                <tv:TableViewTextColumn
                     Header="Fecha"
-                    Binding="{Binding Fecha}" />
+                    Binding="{Binding Fecha}"
+                    Width="auto"/>
+                <tv:TableViewNumberColumn
+                    Header="Total (€)"
+                    Binding="{Binding Total}"
+                    Width="auto"/>
+                <tv:TableViewTextColumn
+                    Header="Estado reparto"
+                    Binding="{Binding EstadoReparto}"
+                    Width="auto"/>
+            </tv:TableView.Columns>
+        </tv:TableView>
 
-                <ct:DataGridTextColumn
-                    Header="Total"
-                    Binding="{Binding TotalFactura}" >
-                    <ct:DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right"/>
-                        </Style>
-                    </ct:DataGridTextColumn.ElementStyle>
-                </ct:DataGridTextColumn>
-
-                <ct:DataGridTextColumn
-                    Header="Estado de reparto"
-                    Binding="{Binding EstadoReparto}" />
-            </ct:DataGrid.Columns>
-        </ct:DataGrid>
 
         <!-- Fila 2: Solo botón Volver -->
         <StackPanel
-        Grid.Row="2"
-        Orientation="Horizontal"
-        HorizontalAlignment="Right"
-        Padding="16"
-        Spacing="8">
+            Grid.Row="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            Padding="16"
+            Spacing="8">
             <Button
-          x:Name="ButtonVolver"
-          Content="Volver"
-          Width="100"
-          Click="OnVolverClicked" />
+                x:Name="ButtonVolver"
+                Content="Volver"
+                Width="100"
+                Click="OnVolverClicked" />
         </StackPanel>
     </Grid>
 </Window>
