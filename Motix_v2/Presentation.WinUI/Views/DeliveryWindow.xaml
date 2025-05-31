@@ -8,8 +8,6 @@
     x:Name="This"
     Title="Reparto">
 
-    <!-- Ya no usamos <Window.Resources> aquí -->
-
     <Grid DataContext="{Binding ViewModel, ElementName=This}"
         Background="{StaticResource BackgroundColor}">
         <!-- Recursos locales -->
@@ -51,8 +49,30 @@
             CanUserSortColumns="True"
             ColumnWidth="*"
             Margin="16">
-            <!-- columnas... -->
+
+            <ctl:DataGrid.Columns>
+                <!-- Id del albarán -->
+                <ctl:DataGridTextColumn
+                    Header="Id Albarán"
+                    Binding="{Binding Id}" />
+
+                <!-- Nombre del cliente -->
+                <ctl:DataGridTextColumn
+                    Header="Cliente"
+                    Binding="{Binding Cliente.Nombre}" />
+
+                <!-- Número total de piezas -->
+                <ctl:DataGridTextColumn
+                    Header="Núm. piezas"
+                    Binding="{Binding NumeroPiezas}" />
+
+                <!-- Estado de reparto -->
+                <ctl:DataGridTextColumn
+                    Header="Estado reparto"
+                    Binding="{Binding EstadoRepartoDisplay}" />
+            </ctl:DataGrid.Columns>
         </ctl:DataGrid>
+
 
         <!-- Botones -->
         <StackPanel Grid.Row="2"
@@ -66,11 +86,11 @@
 
             <Button Content="Repartir"
                 Visibility="{Binding ShowStartDeliveryButton, Converter={StaticResource BoolToVis}}"
-                Command="{x:Bind ViewModel.StartDeliveryCommand}"/>
+                Click="OnRepartirClicked"/>
 
             <Button Content="Terminar reparto"
                 Visibility="{Binding ShowFinishDeliveryButton, Converter={StaticResource BoolToVis}}"
-                Command="{x:Bind ViewModel.FinishDeliveryCommand}"/>
+                Click="OnTerminarRepartoClicked"/>
         </StackPanel>
     </Grid>
 </Window>

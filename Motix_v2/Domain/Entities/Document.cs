@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Motix_v2.Domain.Entities
 {
@@ -58,6 +59,17 @@ namespace Motix_v2.Domain.Entities
         public ICollection<DocumentLine> Lines { get; set; } = new List<DocumentLine>();
 
         [NotMapped]
+        public string EstadoRepartoDisplay
+        {
+            get
+            {
+                return EstadoReparto == "EnReparto"
+                    ? "En reparto"
+                    : EstadoReparto;
+            }
+        }
+
+        [NotMapped]
         public string FechaFormateada
         {
             get
@@ -67,5 +79,16 @@ namespace Motix_v2.Domain.Entities
                     .ToString("dd/MM/yyyy HH:mm");
             }
         }
+
+        [NotMapped]
+        public int NumeroPiezas
+        {
+            get
+            {
+                // Suma todas las cantidades de las líneas
+                return Lines?.Sum(l => l.Cantidad) ?? 0;
+            }
+        }
+
     }
 }

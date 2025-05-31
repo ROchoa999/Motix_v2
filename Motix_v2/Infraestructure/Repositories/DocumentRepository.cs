@@ -35,6 +35,7 @@ namespace Motix_v2.Infraestructure.Repositories
         public async Task<IEnumerable<Document>> GetAllAsync(CancellationToken ct = default) =>
             await _dbSet
                 .Include(d => d.Cliente)
+                .Include(d => d.Lines)
                 .AsNoTracking()
                 .ToListAsync(ct);
 
@@ -43,6 +44,7 @@ namespace Motix_v2.Infraestructure.Repositories
             CancellationToken ct = default) =>
             await _dbSet
                 .Include(d => d.Cliente)
+                .Include(d => d.Lines)
                 .AsNoTracking()
                 .Where(predicate)
                 .ToListAsync(ct);
