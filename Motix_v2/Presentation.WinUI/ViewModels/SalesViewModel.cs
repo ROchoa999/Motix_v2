@@ -52,6 +52,25 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         }
 
         public string DocumentId { get; private set; } = Guid.NewGuid().ToString();
+        public void ClearInvoiceState()
+        {
+            DocumentId = Guid.NewGuid().ToString();
+            OnPropertyChanged(nameof(DocumentId));
+
+            CurrentInvoiceId = string.Empty;
+            OnPropertyChanged(nameof(CurrentInvoiceId));
+            CurrentInvoiceDate = default;
+            OnPropertyChanged(nameof(CurrentInvoiceDate));
+            OnPropertyChanged(nameof(CurrentInvoiceDateFormatted));
+
+            IsReadOnlyMode = false;
+
+            SelectedCustomer = null;
+
+            Observaciones = string.Empty;
+
+            Lines.Clear();
+        }
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

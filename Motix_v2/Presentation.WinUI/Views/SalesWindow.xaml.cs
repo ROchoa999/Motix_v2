@@ -136,6 +136,7 @@ namespace Motix_v2.Presentation.WinUI.Views
 
             // 3) Limpiar líneas de documento añadidas
             ViewModel.Lines.Clear();
+            ViewModel.ClearInvoiceState();
 
             _currentDocument = new Document
             {
