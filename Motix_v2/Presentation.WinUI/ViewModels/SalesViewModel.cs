@@ -35,7 +35,23 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             }
         }
 
-        public string DocumentId { get; } = Guid.NewGuid().ToString();
+        public bool CanEdit => !_isReadOnlyMode;
+        private bool _isReadOnlyMode = false;
+        public bool IsReadOnlyMode
+        {
+            get => _isReadOnlyMode;
+            private set
+            {
+                if (_isReadOnlyMode != value)
+                {
+                    _isReadOnlyMode = value;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(CanEdit));
+                }
+            }
+        }
+
+        public string DocumentId { get; private set; } = Guid.NewGuid().ToString();
         public IReadOnlyList<string> PaymentMethods { get; } = new[] { "Tarjeta", "Efectivo" };
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -259,6 +275,8 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             OnPropertyChanged(nameof(CurrentInvoiceId));
             OnPropertyChanged(nameof(CurrentInvoiceDate));
             OnPropertyChanged(nameof(CurrentInvoiceDateFormatted));
+
+            IsReadOnlyMode = true;
         }
 
         private void OnEmitInvoiceCanExecute(XamlUICommand sender, CanExecuteRequestedEventArgs args)
