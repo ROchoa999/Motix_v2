@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Input;
 using Motix_v2.Domain.Entities;
 using Motix_v2.Infraestructure.UnitOfWork;
 using System.Collections.Generic;
+using Motix_v2.Infraestructure.Repositories;
 
 namespace Motix_v2.Presentation.WinUI.ViewModels
 {
@@ -90,11 +91,10 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         private async Task StartDeliveryAsync()
         {
+            var repo = (DocumentRepository)_uow.Documents;
+
             foreach (var doc in DeliveryDocuments)
-            {
-                doc.EstadoReparto = EstadoReparto.EnReparto.ToString();
-                _uow.Documents.Update(doc);
-            }
+                repo.UpdateEstadoReparto(doc.Id, EstadoReparto.EnReparto.ToString());
 
             await _uow.SaveChangesAsync();
 
@@ -103,11 +103,11 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         private async Task FinishDeliveryAsync()
         {
+            var repo = (DocumentRepository)_uow.Documents;
+
             foreach (var doc in DeliveryDocuments)
-            {
-                doc.EstadoReparto = EstadoReparto.Entregado.ToString();
-                _uow.Documents.Update(doc);
-            }
+                repo.UpdateEstadoReparto(doc.Id, EstadoReparto.Entregado.ToString());
+
             await _uow.SaveChangesAsync();
             await LoadAsync();
         }

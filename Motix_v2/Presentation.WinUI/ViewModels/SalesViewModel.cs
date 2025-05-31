@@ -6,6 +6,7 @@ using Motix_v2.Domain.Entities;
 using Motix_v2.Infraestructure.UnitOfWork;
 using System.Linq;
 using System;
+using System.IO;
 using Motix_v2.Infraestructure.Repositories;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -19,6 +20,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly AuthenticationService _authService;
+        private readonly PdfService _pdfService;
 
         public string CurrentInvoiceId { get; private set; } = string.Empty;
         public DateTimeOffset CurrentInvoiceDate { get; private set; }
@@ -47,6 +49,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                     _isReadOnlyMode = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(CanEdit));
+                    GeneratePdfCommand.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -147,11 +150,14 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
         public Task SaveAsync(CancellationToken ct = default) => _unitOfWork.SaveChangesAsync(ct);
 
-        public SalesViewModel(IUnitOfWork unitOfWork, AuthenticationService authService)
+        public SalesViewModel(IUnitOfWork unitOfWork, AuthenticationService authService, PdfService pdfService)
         {
             _unitOfWork = unitOfWork;
             _authService = App.Host.Services.GetRequiredService<AuthenticationService>();
             _authService.PropertyChanged += AuthServiceOnPropertyChanged;
+
+            _pdfService = pdfService;
+
             Vendedor = _authService.CurrentUserName;
             Lines.CollectionChanged += (s, e) => RecalculateTotals();
 
@@ -160,6 +166,16 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             EmitInvoiceCommand.ExecuteRequested += OnEmitInvoiceExecute;
 
             RecalculateTotals();
+            InitializeGeneratePdfCommand();
+        }
+
+        public XamlUICommand GeneratePdfCommand { get; private set; }
+
+        private void InitializeGeneratePdfCommand()
+        {
+            GeneratePdfCommand = new XamlUICommand();
+            GeneratePdfCommand.CanExecuteRequested += OnGeneratePdfCanExecute;
+            GeneratePdfCommand.ExecuteRequested += OnGeneratePdfExecute;
         }
 
         public async Task<List<Customer>> SearchCustomersAsync(CancellationToken ct = default)
@@ -322,5 +338,45 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 EmitInvoiceCommand.NotifyCanExecuteChanged();
             }
         }
+
+        private void OnGeneratePdfCanExecute(XamlUICommand sender, CanExecuteRequestedEventArgs args)
+        {
+            bool puedeGenerar =
+                   IsReadOnlyMode                    // Sólo en modo lectura
+                && !string.IsNullOrEmpty(CurrentInvoiceId)
+                && SelectedCustomer != null
+                && Lines != null && Lines.Any();
+
+            args.CanExecute = puedeGenerar;
+        }
+
+        private async void OnGeneratePdfExecute(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        {
+            var desktop = Environment.GetFolderPath(
+                      Environment.SpecialFolder.DesktopDirectory);
+            var outputPath = Path.Combine(
+                                desktop, $"Albaran_{CurrentInvoiceId}.pdf");
+
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+
+            // ①  Traemos las líneas con su Pieza incluida
+            var lines = await docRepo.GetLinesWithPieceByDocumentIdAsync(CurrentInvoiceId);
+
+            var documentEntity = new Document
+            {
+                Id = CurrentInvoiceId,
+                ClienteId = SelectedCustomer.Id,
+                Cliente = SelectedCustomer,
+                Fecha = CurrentInvoiceDate,
+                BaseImponible = BaseImponible,
+                Iva = Iva21,
+                Total = TotalFactura,
+                Observaciones = Observaciones
+            };
+            
+            await _pdfService.GenerateInvoicePdfAsync(documentEntity, SelectedCustomer, lines, outputPath);
+
+        }
+
     }
 }

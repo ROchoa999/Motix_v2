@@ -11,8 +11,10 @@ using System;
 using System.Runtime.InteropServices;
 using WinRT.Interop;
 using Motix_v2.Infraestructure.UnitOfWork;
+using Motix_v2.Infraestructure.Services;
 using Motix_v2.Presentation.WinUI.ViewModels;
 using Microsoft.Extensions.Logging;
+using QuestPDF.Infrastructure;
 
 namespace Motix_v2
 {
@@ -37,7 +39,8 @@ namespace Motix_v2
                 })
                 .ConfigureServices((ctx, services) =>
                 {
-                    services.AddSingleton<Infraestructure.Services.AuthenticationService>();
+                    services.AddSingleton<AuthenticationService>();
+                    services.AddSingleton<PdfService>();
 
                     services.AddDbContext<AppDbContext>(opt =>
                         opt.UseNpgsql(ctx.Configuration.GetConnectionString("MotixDb"))
@@ -65,6 +68,8 @@ namespace Motix_v2
                 .Build();
 
             Host.Start();
+
+            QuestPDF.Settings.License = LicenseType.Community;
 
             this.InitializeComponent();
         }

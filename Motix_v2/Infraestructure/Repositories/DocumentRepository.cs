@@ -60,6 +60,13 @@ namespace Motix_v2.Infraestructure.Repositories
         public void Update(Document entity) =>
             _dbSet.Update(entity);
 
+        public void UpdateEstadoReparto(string docId, string nuevoEstado)
+        {
+            var stub = new Document { Id = docId, EstadoReparto = nuevoEstado };
+            _dbSet.Attach(stub);
+            _context.Entry(stub).Property(d => d.EstadoReparto).IsModified = true;
+        }
+
         public void Remove(Document entity) =>
             _dbSet.Remove(entity);
 
@@ -100,5 +107,14 @@ namespace Motix_v2.Infraestructure.Repositories
         public void RemoveLinesByDocumentId(string documentId) =>
             _linesSet.RemoveRange(
                 _linesSet.Where(l => l.DocumentoId == documentId));
+
+        public async Task<IEnumerable<DocumentLine>> GetLinesWithPieceByDocumentIdAsync(
+            string documentId,
+            CancellationToken ct = default) =>
+            await _linesSet
+                .Include(l => l.Pieza)
+                .AsNoTracking()
+                .Where(l => l.DocumentoId == documentId)
+                .ToListAsync(ct);
     }
 }
