@@ -31,6 +31,7 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
         public AddLineWindow(string documentoId, Document parentDocument)
         {
             this.InitializeComponent();
+            AppWindow.SetIcon("Assets\\IconoV1.ico");
             _documentoId = documentoId;
             _parentDocument = parentDocument;
 

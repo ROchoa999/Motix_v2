@@ -58,11 +58,14 @@
                     Click="Stock_Click">
                     <Image Source="ms-appx:///Assets/BuscarPiezas.png" Style="{StaticResource ButtonImageStyle}" />
                 </Button>
+                <!-- Listado de stock -->
                 <Button x:Name="ButtonGeneratePdf"
                     Style="{StaticResource HorizontalButtonStyle}"
                     ToolTipService.ToolTip="Generar PDF"
                     Command="{x:Bind ViewModel.GeneratePdfCommand, Mode=OneWay}">
-                    <TextBlock Text="PDF" />
+                    <Image
+                        Source="ms-appx:///Assets/PDF.png"
+                        Style="{StaticResource ButtonImageStyle}" />
                 </Button>
 
             </StackPanel>

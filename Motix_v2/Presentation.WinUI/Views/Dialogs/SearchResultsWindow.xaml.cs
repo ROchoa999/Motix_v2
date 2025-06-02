@@ -16,6 +16,7 @@ namespace Motix_v2.Presentation.WinUI.Views.Dialogs
         public SearchResultsWindow(IEnumerable<Customer> results)
         {
             InitializeComponent();
+            AppWindow.SetIcon("Assets\\IconoV1.ico");
 
             ViewModel = new SearchResultsViewModel(results);
 

@@ -16,6 +16,7 @@ namespace Motix_v2.Presentation.WinUI.Views
         public DocumentWindow()
         {
             InitializeComponent();
+            AppWindow.SetIcon("Assets\\IconoV1.ico");
 
             ViewModel = App.Host.Services
                 .GetRequiredService<DocumentViewModel>();

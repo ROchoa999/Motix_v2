@@ -104,6 +104,9 @@
     <Content Update="Assets\NuevoAlbaran.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\PDF.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\Pedido.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

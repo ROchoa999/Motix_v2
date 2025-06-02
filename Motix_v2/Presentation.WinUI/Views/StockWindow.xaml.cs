@@ -18,6 +18,8 @@ namespace Motix_v2.Presentation.WinUI.Views
         public StockWindow()
         {
             InitializeComponent();
+            AppWindow.SetIcon("Assets\\IconoV1.ico");
+
             ViewModel = App.Host.Services.GetRequiredService<StockViewModel>();
             ViewModel.LoadCommand.Execute(null);
 

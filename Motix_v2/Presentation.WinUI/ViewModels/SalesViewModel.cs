@@ -359,7 +359,6 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
 
             var docRepo = (DocumentRepository)_unitOfWork.Documents;
 
-            // ①  Traemos las líneas con su Pieza incluida
             var lines = await docRepo.GetLinesWithPieceByDocumentIdAsync(CurrentInvoiceId);
 
             var documentEntity = new Document
