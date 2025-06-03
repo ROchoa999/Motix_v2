@@ -49,6 +49,17 @@ namespace Motix_v2.Infraestructure.Repositories
                 .Where(predicate)
                 .ToListAsync(ct);
 
+        public async Task<string> GetLastSequentialDocumentIdAsync()
+        {
+            var lastId = await _context.Set<Document>()
+                .Where(d => d.Id.StartsWith("AL-"))
+                .OrderByDescending(d => d.Id)
+                .Select(d => d.Id)
+                .FirstOrDefaultAsync();
+
+            return lastId;
+        }
+
         // ----------- Escritura de documentos -----------
 
         public async Task AddAsync(Document entity, CancellationToken ct = default) =>

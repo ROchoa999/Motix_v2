@@ -281,10 +281,30 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 EstadoReparto = EstadoReparto.Pendiente.ToString(),
             };
 
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+            var lastSequentialId = await docRepo.GetLastSequentialDocumentIdAsync();
+
+            int nextNumber;
+            if (string.IsNullOrEmpty(lastSequentialId))
+            {
+                nextNumber = 1;
+            }
+            else
+            {
+                var lastDash = lastSequentialId.LastIndexOf('-');
+                var numericPart = lastSequentialId.Substring(lastDash + 1);
+                if (!int.TryParse(numericPart, out var parsed))
+                    parsed = 0;
+                nextNumber = parsed + 1;
+            }
+
+            var newSequentialId = $"AL-{nextNumber.ToString().PadLeft(7, '0')}";
+
+            doc.Id = newSequentialId;
+
             await _unitOfWork.Documents.AddAsync(doc);
 
-            // Añadir líneas con el mismo GUID de documento
-            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+
             foreach (var line in Lines)
             {
                 line.DocumentoId = doc.Id;
