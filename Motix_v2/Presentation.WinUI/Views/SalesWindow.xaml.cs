@@ -8,6 +8,9 @@ using Motix_v2.Presentation.WinUI.Views.Dialogs;
 using Motix_v2.Domain.Entities;
 using Microsoft.UI.Xaml.Controls;
 using Motix_v2.Infraestructure.Services;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Windows.System;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -35,7 +38,6 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private async void ButtonGeneratePdf_Click(object sender, RoutedEventArgs e)
         {
-            // 1) Si no estamos en modo lectura (albarán incompleto), mostramos mensaje de error
             if (!ViewModel.IsReadOnlyMode)
             {
                 if (this.Content is FrameworkElement root)
@@ -52,14 +54,46 @@ namespace Motix_v2.Presentation.WinUI.Views
                 return;
             }
 
-            // 2) Si estamos en modo lectura, invocamos el método del ViewModel para generar el PDF
+            var savePicker = new FileSavePicker
+            {
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+                SuggestedFileName = $"Albarán_{ViewModel.CurrentInvoiceId}"
+            };
+            savePicker.FileTypeChoices.Add("Archivo PDF", new[] { ".pdf" });
+
+            var hwnd = WindowNative.GetWindowHandle(this);
+            InitializeWithWindow.Initialize(savePicker, hwnd);
+
+            StorageFile file = await savePicker.PickSaveFileAsync();
+            if (file == null)
+            {
+                return;
+            }
+
+            string outputPath = file.Path;
+
             try
             {
-                await ViewModel.GeneratePdfAsync();
+                await ViewModel.GeneratePdfAsync(outputPath);
+
+                bool launched = await Launcher.LaunchFileAsync(file);
+                if (!launched)
+                {
+                    if (this.Content is FrameworkElement root)
+                    {
+                        var dlgErr = new ContentDialog
+                        {
+                            Title = "Error al abrir PDF",
+                            Content = "El PDF se guardó correctamente, pero no pudo abrirse automáticamente.",
+                            CloseButtonText = "OK",
+                            XamlRoot = root.XamlRoot
+                        };
+                        await dlgErr.ShowAsync();
+                    }
+                }
             }
             catch (Exception ex)
             {
-                // Si hay algún fallo en la generación del PDF, lo capturamos y mostramos al usuario
                 if (this.Content is FrameworkElement root)
                 {
                     var dlg = new ContentDialog

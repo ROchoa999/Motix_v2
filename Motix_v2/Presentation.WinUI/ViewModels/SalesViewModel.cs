@@ -329,16 +329,13 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             }
         }
 
-        public async Task GeneratePdfAsync()
+        public async Task GeneratePdfAsync(string outputPath)
         {
-            var desktop = Environment.GetFolderPath(
-                  Environment.SpecialFolder.DesktopDirectory);
-            var outputPath = Path.Combine(
-                                desktop, $"Albaran_{CurrentInvoiceId}.pdf");
-
+            // 1) Obtener las líneas desde el repositorio
             var docRepo = (DocumentRepository)_unitOfWork.Documents;
             var lines = await docRepo.GetLinesWithPieceByDocumentIdAsync(CurrentInvoiceId);
 
+            // 2) Construir el objeto Document con la información actual
             var documentEntity = new Document
             {
                 Id = CurrentInvoiceId,
@@ -351,8 +348,10 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 Observaciones = Observaciones
             };
 
+            // 3) Llamar al servicio que genera el PDF en la ruta indicada
             await _pdfService.GenerateInvoicePdfAsync(documentEntity, SelectedCustomer, lines, outputPath);
         }
+
 
         public async Task LoadDocumentAsync(string documentId)
         {
