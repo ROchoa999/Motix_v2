@@ -70,7 +70,8 @@ namespace Motix_v2.Presentation.WinUI.Views
 
                 // Verificar el hash de la contraseña
                 if (usuarioEnt != null
-                    && PasswordSecurity.VerifyPassword(contraseña, usuarioEnt.ContrasenaHash))
+                    && PasswordSecurity.VerifyPassword(contraseña, usuarioEnt.ContrasenaHash)
+                    && usuarioEnt.RolId == 1)
                 {
                     // Guardar el usuario logueado en el servicio de sesión
                     var auth = _services.GetRequiredService<Infraestructure.Services.AuthenticationService>();
