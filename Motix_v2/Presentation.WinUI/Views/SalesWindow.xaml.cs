@@ -33,6 +33,48 @@ namespace Motix_v2.Presentation.WinUI.Views
             ClearAlbaranForm();
         }
 
+        private async void ButtonGeneratePdf_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) Si no estamos en modo lectura (albarán incompleto), mostramos mensaje de error
+            if (!ViewModel.IsReadOnlyMode)
+            {
+                if (this.Content is FrameworkElement root)
+                {
+                    var dlg = new ContentDialog
+                    {
+                        Title = "Albarán incompleto",
+                        Content = "No se puede imprimir un PDF si el albarán no está completo.",
+                        CloseButtonText = "OK",
+                        XamlRoot = root.XamlRoot
+                    };
+                    await dlg.ShowAsync();
+                }
+                return;
+            }
+
+            // 2) Si estamos en modo lectura, invocamos el método del ViewModel para generar el PDF
+            try
+            {
+                await ViewModel.GeneratePdfAsync();
+            }
+            catch (Exception ex)
+            {
+                // Si hay algún fallo en la generación del PDF, lo capturamos y mostramos al usuario
+                if (this.Content is FrameworkElement root)
+                {
+                    var dlg = new ContentDialog
+                    {
+                        Title = "Error al generar PDF",
+                        Content = $"Ha ocurrido un error al crear el PDF:\n{ex.Message}",
+                        CloseButtonText = "OK",
+                        XamlRoot = root.XamlRoot
+                    };
+                    await dlg.ShowAsync();
+                }
+            }
+        }
+
+
         private void Reparto_Click(object sender, RoutedEventArgs e) => ShowModal(new DeliveryWindow());
         private void Documentos_Click(object sender, RoutedEventArgs e) => ShowModal(new DocumentWindow());
         private void Stock_Click(object sender, RoutedEventArgs e) => ShowModal(new StockWindow());

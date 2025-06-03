@@ -49,7 +49,6 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                     _isReadOnlyMode = value;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(CanEdit));
-                    GeneratePdfCommand.NotifyCanExecuteChanged();
                 }
             }
         }
@@ -166,17 +165,8 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             EmitInvoiceCommand.ExecuteRequested += OnEmitInvoiceExecute;
 
             RecalculateTotals();
-            InitializeGeneratePdfCommand();
         }
 
-        public XamlUICommand GeneratePdfCommand { get; private set; }
-
-        private void InitializeGeneratePdfCommand()
-        {
-            GeneratePdfCommand = new XamlUICommand();
-            GeneratePdfCommand.CanExecuteRequested += OnGeneratePdfCanExecute;
-            GeneratePdfCommand.ExecuteRequested += OnGeneratePdfExecute;
-        }
 
         public async Task<List<Customer>> SearchCustomersAsync(CancellationToken ct = default)
         {
@@ -339,26 +329,14 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             }
         }
 
-        private void OnGeneratePdfCanExecute(XamlUICommand sender, CanExecuteRequestedEventArgs args)
-        {
-            bool puedeGenerar =
-                   IsReadOnlyMode                    // Sólo en modo lectura
-                && !string.IsNullOrEmpty(CurrentInvoiceId)
-                && SelectedCustomer != null
-                && Lines != null && Lines.Any();
-
-            args.CanExecute = puedeGenerar;
-        }
-
-        private async void OnGeneratePdfExecute(XamlUICommand sender, ExecuteRequestedEventArgs args)
+        public async Task GeneratePdfAsync()
         {
             var desktop = Environment.GetFolderPath(
-                      Environment.SpecialFolder.DesktopDirectory);
+                  Environment.SpecialFolder.DesktopDirectory);
             var outputPath = Path.Combine(
                                 desktop, $"Albaran_{CurrentInvoiceId}.pdf");
 
             var docRepo = (DocumentRepository)_unitOfWork.Documents;
-
             var lines = await docRepo.GetLinesWithPieceByDocumentIdAsync(CurrentInvoiceId);
 
             var documentEntity = new Document
@@ -372,9 +350,8 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
                 Total = TotalFactura,
                 Observaciones = Observaciones
             };
-            
-            await _pdfService.GenerateInvoicePdfAsync(documentEntity, SelectedCustomer, lines, outputPath);
 
+            await _pdfService.GenerateInvoicePdfAsync(documentEntity, SelectedCustomer, lines, outputPath);
         }
 
     }

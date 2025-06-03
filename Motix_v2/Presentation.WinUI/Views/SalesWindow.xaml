@@ -62,7 +62,7 @@
                 <Button x:Name="ButtonGeneratePdf"
                     Style="{StaticResource HorizontalButtonStyle}"
                     ToolTipService.ToolTip="Generar PDF"
-                    Command="{x:Bind ViewModel.GeneratePdfCommand, Mode=OneWay}">
+                    Click="ButtonGeneratePdf_Click">
                     <Image
                         Source="ms-appx:///Assets/PDF.png"
                         Style="{StaticResource ButtonImageStyle}" />
