@@ -115,20 +115,13 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         }
 
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? name = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-        // 1) Lista de clientes únicos que tienen documentos
         private readonly ObservableCollection<string> _clientNames
             = new ObservableCollection<string>();
         public ObservableCollection<string> ClientNames => _clientNames;
 
-        // 2) Lista de estados (el enum) para el picklist
         public ObservableCollection<KeyValuePair<EstadoReparto, string>> EstadoRepartoItems { get; }
         public EstadoReparto? SelectedEstadoReparto { get; set; }
 
-        // 3) Propiedades seleccionadas en los ComboBox
         private string? _selectedClientName;
         public string? SelectedClientName
         {
@@ -136,7 +129,7 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             set { _selectedClientName = value; OnPropertyChanged();}
         }
 
-        // Método auxiliar para actualizar la lista de clientes en cada carga o búsqueda
+
         private void UpdateClientNames()
         {
         var nombres = DocumentItems
@@ -146,6 +139,31 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
         _clientNames.Clear();
                 foreach (var n in nombres)
             _clientNames.Add(n);
+        }
+
+        private string _selectedDocumentId = string.Empty;
+        public string SelectedDocumentId
+        {
+            get => _selectedDocumentId;
+            private set
+            {
+                if (_selectedDocumentId != value)
+                {
+                    _selectedDocumentId = value;
+                    OnPropertyChanged();
+                }
             }
         }
+
+        public void SelectDocument(string documentId)
+        {
+            SelectedDocumentId = documentId;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+
 }

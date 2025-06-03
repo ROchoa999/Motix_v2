@@ -76,8 +76,37 @@ namespace Motix_v2.Presentation.WinUI.Views
 
 
         private void Reparto_Click(object sender, RoutedEventArgs e) => ShowModal(new DeliveryWindow());
-        private void Documentos_Click(object sender, RoutedEventArgs e) => ShowModal(new DocumentWindow());
         private void Stock_Click(object sender, RoutedEventArgs e) => ShowModal(new StockWindow());
+
+        private void Documentos_Click(object sender, RoutedEventArgs e)
+        {
+            var docWindow = new DocumentWindow();
+            docWindow.Closed += async (s, args) =>
+            {
+                var selectedId = docWindow.ViewModel.SelectedDocumentId;
+                if (!string.IsNullOrEmpty(selectedId))
+                {
+                    await ViewModel.LoadDocumentAsync(selectedId);
+
+                    if (ViewModel.SelectedCustomer != null)
+                    {
+                        TextBoxClientId.Text = ViewModel.SelectedCustomer.Id.ToString();
+                        TextBoxName.Text = ViewModel.SelectedCustomer.Nombre;
+                        TextBoxCifNif.Text = ViewModel.SelectedCustomer.CifNif ?? string.Empty;
+                        TextBoxPhone.Text = ViewModel.SelectedCustomer.Telefono ?? string.Empty;
+                        TextBoxEmail.Text = ViewModel.SelectedCustomer.Email ?? string.Empty;
+                        TextBoxAddress.Text = ViewModel.SelectedCustomer.Direccion ?? string.Empty;
+                    }
+
+                    _currentDocument = new Document
+                    {
+                        Id = selectedId,
+                        ClienteId = ViewModel.SelectedCustomer?.Id ?? 0
+                    };
+                }
+            };
+            ShowModal(docWindow);
+        }
 
         private async void ButtonSearch_Click(object sender, RoutedEventArgs e)
         {

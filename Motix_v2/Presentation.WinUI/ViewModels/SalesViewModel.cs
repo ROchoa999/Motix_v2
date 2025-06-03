@@ -354,5 +354,34 @@ namespace Motix_v2.Presentation.WinUI.ViewModels
             await _pdfService.GenerateInvoicePdfAsync(documentEntity, SelectedCustomer, lines, outputPath);
         }
 
+        public async Task LoadDocumentAsync(string documentId)
+        {
+            var docRepo = (DocumentRepository)_unitOfWork.Documents;
+            var document = await docRepo.GetByIdAsync(documentId);
+            if (document == null) return;
+
+            CurrentInvoiceId = document.Id;
+            OnPropertyChanged(nameof(CurrentInvoiceId));
+            CurrentInvoiceDate = document.Fecha;
+            OnPropertyChanged(nameof(CurrentInvoiceDate));
+            OnPropertyChanged(nameof(CurrentInvoiceDateFormatted));
+
+            var cliente = await _unitOfWork.Customers.GetByIdAsync(document.ClienteId);
+            SelectedCustomer = cliente;
+            OnPropertyChanged(nameof(SelectedCustomer));
+
+            Observaciones = document.Observaciones ?? string.Empty;
+            OnPropertyChanged(nameof(Observaciones));
+
+            var lines = await docRepo.GetLinesWithPieceByDocumentIdAsync(documentId);
+            Lines.Clear();
+            foreach (var line in lines)
+                Lines.Add(line);
+
+            RecalculateTotals();
+
+            IsReadOnlyMode = true;
+        }
+
     }
 }

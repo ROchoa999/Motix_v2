@@ -7,6 +7,7 @@ using Windows.Graphics;
 using WinRT.Interop;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI;
+using Motix_v2.Domain.Entities;
 
 namespace Motix_v2.Presentation.WinUI.Views
 {
@@ -18,8 +19,9 @@ namespace Motix_v2.Presentation.WinUI.Views
             InitializeComponent();
             AppWindow.SetIcon("Assets\\IconoV1.ico");
 
-            ViewModel = App.Host.Services
-                .GetRequiredService<DocumentViewModel>();
+            TableViewDocuments.SelectionChanged += TableViewDocuments_SelectionChanged;
+
+            ViewModel = App.Host.Services.GetRequiredService<DocumentViewModel>();
 
             // Carga inicial
             ViewModel.LoadCommand.Execute(null);
@@ -50,5 +52,30 @@ namespace Motix_v2.Presentation.WinUI.Views
 
         private void OnVolverClicked(object sender, RoutedEventArgs e)
             => this.Close();
+
+        private void TableViewDocuments_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ButtonAbrir.IsEnabled = TableViewDocuments.SelectedItem is Document;
+        }
+
+        private void ButtonAbrir_Click(object sender, RoutedEventArgs e)
+        {
+            if(ViewModel != null && TableViewDocuments.SelectedItem is Document doc)
+            {
+                ViewModel.SelectDocument(doc.Id);
+
+                this.Close();
+            }
+        }
+
+        private void TableViewDocuments_DoubleTapped(object sender, Microsoft.UI.Xaml.Input.DoubleTappedRoutedEventArgs e)
+        {
+            if (ViewModel != null && TableViewDocuments.SelectedItem is Document doc)
+            {
+                ViewModel.SelectDocument(doc.Id);
+
+                this.Close();
+            }
+        }
     }
 }

@@ -73,7 +73,9 @@
             AutoGenerateColumns="False"
             Width="auto"
             IsReadOnly="True"
-            Margin="16">
+            Margin="16"
+            DoubleTapped="TableViewDocuments_DoubleTapped">
+
             <tv:TableView.Columns>
                 <tv:TableViewTextColumn
                     Header="ID Documento"
@@ -111,6 +113,11 @@
                 Content="Volver"
                 Width="100"
                 Click="OnVolverClicked" />
+
+            <Button x:Name="ButtonAbrir"
+                Content="Abrir"
+                Click="ButtonAbrir_Click"
+                IsEnabled="False"/>
         </StackPanel>
     </Grid>
 </Window>
